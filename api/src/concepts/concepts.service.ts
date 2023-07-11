@@ -22,19 +22,7 @@ export class ConceptsService {
     return concept;
   }
 
-  // findAll() {
-  //   return `This action returns all concepts`;
-  // }
-
   async findOne(id: string): Promise<Concept> {
     return this.conceptsRepository.findOneBy({ id });
   }
-
-  // update(id: number, updateConceptInput: UpdateConceptInput) {
-  //   return `This action updates a #${id} concept`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} concept`;
-  // }
 }
