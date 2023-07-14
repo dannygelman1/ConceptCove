@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ConceptsService } from './concepts.service';
 import { Concept } from './entities/concept.entity';
 import { CreateConceptInput } from './dto/create-concept.input';
-import { UpdateConceptInput } from './dto/update-concept.input';
 
 @Resolver(() => Concept)
 export class ConceptsResolver {
