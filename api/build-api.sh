@@ -11,5 +11,6 @@ npm install
 echo "Running 'npm run build'..."
 npm run build
 
+echo "finsihed build"
 popd
 echo "Back to directory: $(pwd)"
