@@ -8,7 +8,7 @@ import { PrimaryGeneratedColumn } from 'typeorm/decorator/columns/PrimaryGenerat
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
 
 @ObjectType()
-@Entity('concept')
+@Entity('concepts')
 export class Concept {
   @Field(() => ID, { description: 'ID of the concept art' })
   @PrimaryGeneratedColumn('uuid')
