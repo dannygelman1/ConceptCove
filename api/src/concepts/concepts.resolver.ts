@@ -15,7 +15,12 @@ export class ConceptsResolver {
   }
 
   @Query(() => Concept, { name: 'concept' })
-  findOne(@Args('id', { type: () => String }) id: string): Promise<Concept> {
+  concept(@Args('id', { type: () => String }) id: string): Promise<Concept> {
     return this.conceptsService.findOne(id);
+  }
+
+  @Query(() => [Concept], { name: 'allConcepts' })
+  allConcepts(): Promise<Concept[]> {
+    return this.conceptsService.findAll();
   }
 }

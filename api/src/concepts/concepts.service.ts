@@ -25,4 +25,8 @@ export class ConceptsService {
   async findOne(id: string): Promise<Concept> {
     return this.conceptsRepository.findOneBy({ id });
   }
+
+  async findAll(): Promise<Concept[]> {
+    return this.conceptsRepository.find();
+  }
 }
