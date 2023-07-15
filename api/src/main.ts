@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const allowedOrigins: (string | RegExp)[] = [];
 
-  allowedOrigins.push('https://localhost:3000/');
+  allowedOrigins.push('https://localhost:3000');
 
   app.enableCors({
     origin: allowedOrigins,
