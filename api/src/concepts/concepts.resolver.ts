@@ -11,7 +11,7 @@ export class ConceptsResolver {
   createConcept(
     @Args('createConceptInput') createConceptInput: CreateConceptInput,
   ): Promise<Concept> {
-    console.log('create', createConceptInput);
+    console.log('create create', createConceptInput);
     return this.conceptsService.create(createConceptInput);
   }
 
