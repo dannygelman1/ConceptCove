@@ -14,8 +14,11 @@ import { ApolloDriver } from '@nestjs/apollo';
       playground: true,
       cache: 'bounded',
       cors: {
-        origin: 'https://localhost:3000',
+        origin: ['https://localhost:3000'],
+        methods: ['GET', 'POST', 'OPTIONS'],
+        allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
         credentials: true,
+        maxAge: 3600,
       },
     }),
     TypeOrmModule.forRoot({
