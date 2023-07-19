@@ -4,15 +4,17 @@ import { AppService } from './app.service';
 import { ConceptsModule } from './concepts/concepts.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
+    GraphQLModule.forRoot({
       autoSchemaFile: true,
       playground: true,
       cache: 'bounded',
+      cors: {
+        origin: 'https://localhost:3000',
+        credentials: true,
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
