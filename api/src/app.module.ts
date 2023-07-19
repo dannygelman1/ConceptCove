@@ -4,10 +4,12 @@ import { AppService } from './app.service';
 import { ConceptsModule } from './concepts/concepts.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApolloDriver } from '@nestjs/apollo';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
       cache: 'bounded',
