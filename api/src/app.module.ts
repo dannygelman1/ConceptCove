@@ -4,22 +4,15 @@ import { AppService } from './app.service';
 import { ConceptsModule } from './concepts/concepts.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApolloDriver } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
       cache: 'bounded',
-      cors: {
-        origin: ['https://localhost:3000'],
-        methods: ['GET', 'POST', 'OPTIONS'],
-        allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
-        credentials: true,
-        maxAge: 3600,
-      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
