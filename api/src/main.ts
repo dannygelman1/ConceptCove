@@ -8,6 +8,7 @@ async function bootstrap() {
   const allowedOrigins: (string | RegExp)[] = [];
 
   allowedOrigins.push('https://localhost:3000');
+  allowedOrigins.push('https://concept-cove.vercel.app');
 
   app.enableCors({
     origin: allowedOrigins,
