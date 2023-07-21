@@ -6,7 +6,11 @@ import {
   createConceptData,
   createConceptVariables,
   GQLClient,
+  getConceptsData,
+  GET_CONCEPTS,
+  Concept,
 } from "@/lib/gqlClient";
+import { Dispatch, SetStateAction } from "react";
 
 const gql = new GQLClient();
 
@@ -38,4 +42,12 @@ export const getConcept = async (id: string): Promise<getConceptData> => {
     }
   );
   return conceptData;
+};
+
+export const getConcepts = async (
+  setConcepts: Dispatch<SetStateAction<Concept[]>>
+): Promise<getConceptsData> => {
+  const conceptsData = await gql.request<getConceptsData>(GET_CONCEPTS);
+  setConcepts(conceptsData.allConcepts);
+  return conceptsData;
 };

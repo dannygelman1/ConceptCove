@@ -18,12 +18,10 @@ export class GQLClient {
     document: RequestDocument,
     variables?: V
   ): Promise<Response> {
-    console.log("hey: ", variables);
     const response = await this.gqlClient.request<Response>(
       document,
       variables as Variables
     );
-    console.log("hi");
     return response;
   }
 }
@@ -41,18 +39,36 @@ export const GET_CONCEPT = gql`
 `;
 
 export interface getConceptData {
-  getConcept: {
-    id: string;
-    image_id?: string;
-    title?: string;
-    artist?: string;
-    url?: string;
-  } | null;
+  getConcept: Concept | null;
 }
 
 export interface getConceptVariables {
   id: string;
 }
+
+export const GET_CONCEPTS = gql`
+  query getConcepts {
+    allConcepts {
+      id
+      image_id
+      title
+      artist
+      url
+    }
+  }
+`;
+
+export interface getConceptsData {
+  allConcepts: Concept[];
+}
+
+export type Concept = {
+  id: string;
+  image_id?: string;
+  title?: string;
+  artist?: string;
+  url?: string;
+};
 
 export const CREATE_CONCEPT = gql`
   mutation createConcept($createConceptInput: CreateConceptInput!) {

@@ -9,10 +9,4 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-
-  @Options('*')
-  handleOptions() {
-    // Respond to OPTIONS requests with the appropriate CORS headers
-    return 'OK';
-  }
 }
