@@ -29,4 +29,8 @@ export class ConceptsService {
   async findAll(): Promise<Concept[]> {
     return this.conceptsRepository.find();
   }
+
+  // async findByEmail(): Promise<Concept[]> {
+  //   return this.conceptsRepository.findBy({ email });
+  // }
 }

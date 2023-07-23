@@ -9,6 +9,9 @@ import {
   getConceptsData,
   GET_CONCEPTS,
   Concept,
+  CREATE_USER,
+  createUserVariables,
+  createUserData,
 } from "@/lib/gqlClient";
 import { Dispatch, SetStateAction } from "react";
 
@@ -50,4 +53,22 @@ export const getConcepts = async (
   const conceptsData = await gql.request<getConceptsData>(GET_CONCEPTS);
   setConcepts(conceptsData.allConcepts);
   return conceptsData;
+};
+
+export const createUser = async (
+  name: string,
+  email: string,
+  firebase_id: string
+): Promise<createUserData> => {
+  const userData = await gql.request<createUserData, createUserVariables>(
+    CREATE_USER,
+    {
+      createUserInput: {
+        name,
+        email,
+        firebase_id,
+      },
+    }
+  );
+  return userData;
 };

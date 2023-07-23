@@ -26,4 +26,12 @@ export class ConceptsResolver {
     console.log('query all');
     return this.conceptsService.findAll();
   }
+
+  // @Query(() => [Concept], { name: 'allConcepts' })
+  // conceptsByOwnerEmail(
+  //   @Args('email', { type: () => String }) email: string,
+  // ): Promise<Concept[]> {
+  //   console.log('query all');
+  //   return this.conceptsService.findAll();
+  // }
 }

@@ -100,3 +100,31 @@ export interface createConceptVariables {
     url?: string;
   };
 }
+
+export const CREATE_USER = gql`
+  mutation createUser($createUserInput: CreateUserInput!) {
+    createUser(createUserInput: $createUserInput) {
+      id
+      name
+      email
+      firebase_id
+    }
+  }
+`;
+
+export interface createUserData {
+  createUser: {
+    id: string;
+    name: string;
+    email: string;
+    firebase_id: string;
+  };
+}
+
+export interface createUserVariables {
+  createUserInput: {
+    name: string;
+    email: string;
+    firebase_id: string;
+  };
+}
