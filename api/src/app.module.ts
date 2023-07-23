@@ -5,6 +5,7 @@ import { ConceptsModule } from './concepts/concepts.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       synchronize: false,
     }),
     ConceptsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
