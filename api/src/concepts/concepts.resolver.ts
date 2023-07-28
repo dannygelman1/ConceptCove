@@ -27,6 +27,13 @@ export class ConceptsResolver {
     return this.conceptsService.findAll();
   }
 
+  @Query(() => [Concept], {
+    description: 'Get all concepts for a given user email',
+  })
+  async conceptsByEmail(@Args('email') email: string): Promise<Concept[]> {
+    return this.conceptsService.findByEmail(email);
+  }
+
   // @Query(() => [Concept], { name: 'allConcepts' })
   // conceptsByOwnerEmail(
   //   @Args('email', { type: () => String }) email: string,

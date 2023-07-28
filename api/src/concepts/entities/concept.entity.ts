@@ -6,6 +6,8 @@ import { CreateDateColumn } from 'typeorm/decorator/columns/CreateDateColumn';
 
 import { PrimaryGeneratedColumn } from 'typeorm/decorator/columns/PrimaryGeneratedColumn';
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
+import { User as UserEntity } from 'src/users/entities/user.entity';
+import { JoinColumn, ManyToOne } from 'typeorm';
 
 @ObjectType()
 @Entity('concepts')
@@ -29,6 +31,14 @@ export class Concept {
   @Field({ description: 'Url to the concept art', nullable: true })
   @Column({ name: 'url', nullable: true })
   url?: string;
+
+  @Field({ description: 'Owner id of the concept art' })
+  @Column({ name: 'owner_id' })
+  owner_id!: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.concept)
+  @JoinColumn({ name: 'owner_id' })
+  user: UserEntity;
 
   @Field({ description: 'Creation timestamp of the game.' })
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })

@@ -6,6 +6,8 @@ import { CreateDateColumn } from 'typeorm/decorator/columns/CreateDateColumn';
 
 import { PrimaryGeneratedColumn } from 'typeorm/decorator/columns/PrimaryGeneratedColumn';
 import { UpdateDateColumn } from 'typeorm/decorator/columns/UpdateDateColumn';
+import { OneToMany } from 'typeorm';
+import { Concept } from 'src/concepts/entities/concept.entity';
 
 @ObjectType()
 @Entity('users')
@@ -25,6 +27,9 @@ export class User {
   @Field({ description: 'Firebase ID of the user' })
   @Column({ name: 'firebase_id' })
   firebase_id!: string;
+
+  @OneToMany(() => Concept, (concept) => concept.user)
+  concept: Concept;
 
   @Field({ description: 'Creation timestamp of the game.' })
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })

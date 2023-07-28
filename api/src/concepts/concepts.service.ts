@@ -30,6 +30,16 @@ export class ConceptsService {
     return this.conceptsRepository.find();
   }
 
+  async findByEmail(email: string): Promise<Concept[]> {
+    const concepts = await this.conceptsRepository
+      .createQueryBuilder('concept')
+      .leftJoinAndSelect('concept.user', 'user')
+      .where('user.email = :email', { email })
+      .getMany();
+
+    return concepts;
+  }
+
   // async findByEmail(): Promise<Concept[]> {
   //   return this.conceptsRepository.findBy({ email });
   // }
