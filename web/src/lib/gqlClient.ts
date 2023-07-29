@@ -34,6 +34,7 @@ export const GET_CONCEPT = gql`
       title
       artist
       url
+      owner_id
     }
   }
 `;
@@ -46,6 +47,27 @@ export interface getConceptVariables {
   id: string;
 }
 
+export const GET_CONCEPTS_BY_EMAIL = gql`
+  query getConceptsByEmail($email: String!) {
+    conceptsByEmail(email: $email) {
+      id
+      image_id
+      title
+      artist
+      url
+      owner_id
+    }
+  }
+`;
+
+export interface getConceptByEmailData {
+  conceptsByEmail: Concept[];
+}
+
+export interface getConceptByEmailVariables {
+  email: string;
+}
+
 export const GET_CONCEPTS = gql`
   query getConcepts {
     allConcepts {
@@ -54,6 +76,7 @@ export const GET_CONCEPTS = gql`
       title
       artist
       url
+      owner_id
     }
   }
 `;
@@ -68,6 +91,7 @@ export type Concept = {
   title?: string;
   artist?: string;
   url?: string;
+  owner_id: string;
 };
 
 export const CREATE_CONCEPT = gql`

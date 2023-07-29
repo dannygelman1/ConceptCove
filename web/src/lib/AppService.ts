@@ -12,6 +12,9 @@ import {
   CREATE_USER,
   createUserVariables,
   createUserData,
+  getConceptByEmailData,
+  getConceptByEmailVariables,
+  GET_CONCEPTS_BY_EMAIL,
 } from "@/lib/gqlClient";
 import { Dispatch, SetStateAction } from "react";
 
@@ -71,4 +74,20 @@ export const createUser = async (
     }
   );
   return userData;
+};
+
+export const getConceptsByEmail = async (
+  email: string,
+  setConcepts: Dispatch<SetStateAction<Concept[]>>
+): Promise<getConceptByEmailData> => {
+  console.log("HERE", email);
+  const conceptsData = await gql.request<
+    getConceptByEmailData,
+    getConceptByEmailVariables
+  >(GET_CONCEPTS_BY_EMAIL, {
+    email,
+  });
+  console.log("DATA", conceptsData.conceptsByEmail);
+  setConcepts(conceptsData.conceptsByEmail ?? []);
+  return conceptsData;
 };

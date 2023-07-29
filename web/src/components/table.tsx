@@ -1,9 +1,8 @@
 import { ReactElement, useEffect, useState } from "react";
 import {
   createConcept,
-  createUser,
   getConcept,
-  getConcepts,
+  getConceptsByEmail,
 } from "@/lib/AppService";
 import { Concept, getConceptData } from "@/lib/gqlClient";
 import firebaseService from "@/lib/firebaseService";
@@ -12,14 +11,15 @@ interface TableProps {}
 
 export const Table = ({}: TableProps): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
+
   useEffect(() => {
-    getConcepts(setConcepts);
+    const unsubscribe = firebaseService.auth.onAuthStateChanged((user) => {
+      console.log("FIRST USE EFFECT: ", user);
+      getConceptsByEmail(user?.email ?? "", setConcepts);
+    });
+    return () => unsubscribe(); // unsubscribing from the listener when the component is unmounting.
   }, []);
-  console.log(
-    "email id: ",
-    firebaseService.currentUser?.email,
-    firebaseService.currentUser?.idToken
-  );
+
   return (
     <div className="bg-green-200 absolute flex flex-col justify-center w-full">
       <h1 className="font-bold text-2xl text-center p-16">Concept Cove</h1>
@@ -72,24 +72,16 @@ export const Table = ({}: TableProps): ReactElement => {
         <button
           onClick={async () => {
             await firebaseService.signInWithPopup();
-            await firebaseService.idToken();
-            console.log(
-              "after click email id: ",
-              firebaseService.currentUser?.email,
-              firebaseService.currentUser?.idToken
-            );
-            if (
-              firebaseService.currentUser?.email &&
-              firebaseService.currentUser?.idToken
-            )
-              await createUser(
-                firebaseService.currentUser?.email,
-                firebaseService.currentUser?.email,
-                "5788cea0-66c9-4292-9cab-db9d59ba0cfc"
-              );
           }}
         >
-          sign up
+          login
+        </button>
+        <button
+          onClick={async () => {
+            await firebaseService.signOut();
+          }}
+        >
+          logout
         </button>
       </div>
     </div>

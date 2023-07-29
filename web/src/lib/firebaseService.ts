@@ -16,19 +16,8 @@ export interface AuthUser {
 
 class FirebaseService {
   currentUser: AuthUser | undefined;
-  private readonly auth: Auth = getAuth(firebase);
+  readonly auth: Auth = getAuth(firebase);
   private readonly provider: GoogleAuthProvider = new GoogleAuthProvider();
-
-  constructor() {
-    this.auth.onAuthStateChanged(
-      (user) => {
-        this.currentUser = user || undefined;
-      },
-      () => {
-        this.currentUser = undefined;
-      }
-    );
-  }
 
   async idToken(): Promise<string | undefined> {
     const idToken = (await this.auth.currentUser?.getIdToken()) || undefined;
