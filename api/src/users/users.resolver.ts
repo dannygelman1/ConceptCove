@@ -14,7 +14,7 @@ export class UsersResolver {
     return this.usersService.create(createUserInput);
   }
 
-  @Query(() => User, { name: 'findUser' })
+  @Query(() => User, { name: 'findUser', nullable: true })
   findUser(
     @Args('email', { type: () => String }) email: string,
     @Args('firebase_id', { type: () => String }) firebase_id: string,
