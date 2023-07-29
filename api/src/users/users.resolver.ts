@@ -8,17 +8,17 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ): Promise<User> {
     return this.usersService.create(createUserInput);
   }
 
-  @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne(id);
+  @Query(() => User, { name: 'findUser' })
+  findUser(
+    @Args('email', { type: () => String }) email: string,
+    @Args('firebase_id', { type: () => String }) firebase_id: string,
+  ): Promise<User | null> {
+    return this.usersService.findOneByEmailAndFirebaseId(email, firebase_id);
   }
 }

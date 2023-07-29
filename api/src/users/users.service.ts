@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private conceptsRepository: Repository<User>,
+    private usersRepository: Repository<User>,
   ) {}
 
   async create(createUserInput: CreateUserInput) {
@@ -18,23 +18,14 @@ export class UsersService {
     concept.name = createUserInput.name;
     concept.email = createUserInput.email;
     concept.firebase_id = createUserInput.firebase_id;
-    concept = await this.conceptsRepository.save(concept);
+    concept = await this.usersRepository.save(concept);
     return concept;
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  findOneByEmailAndFirebaseId(
+    email: string,
+    firebase_id: string,
+  ): Promise<User | null> {
+    return this.usersRepository.findOneBy({ email, firebase_id });
   }
 }

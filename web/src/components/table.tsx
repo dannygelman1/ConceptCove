@@ -14,7 +14,6 @@ export const Table = ({}: TableProps): ReactElement => {
 
   useEffect(() => {
     const unsubscribe = firebaseService.auth.onAuthStateChanged((user) => {
-      console.log("FIRST USE EFFECT: ", user);
       getConceptsByEmail(user?.email ?? "", setConcepts);
     });
     return () => unsubscribe(); // unsubscribing from the listener when the component is unmounting.
