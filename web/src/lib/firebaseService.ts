@@ -9,27 +9,27 @@ import {
 
 import firebase from "@/lib/firebase";
 
-export interface AuthUser {
-  email: string | null;
-  idToken?: string;
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  firebase_id: string;
 }
 
 class FirebaseService {
-  currentUser: AuthUser | undefined;
+  currentUser: User | undefined;
   readonly auth: Auth = getAuth(firebase);
   private readonly provider: GoogleAuthProvider = new GoogleAuthProvider();
-
-  async idToken(): Promise<string | undefined> {
-    const idToken = (await this.auth.currentUser?.getIdToken()) || undefined;
-    if (this.currentUser) this.currentUser.idToken = idToken;
-    return this.auth.currentUser?.getIdToken() || Promise.resolve(undefined);
-  }
 
   onAuthStateChanged(fn: (loggedIn: boolean) => void): Unsubscribe {
     return this.auth.onAuthStateChanged(
       (user) => fn(Boolean(user)),
       () => fn(false)
     );
+  }
+
+  set user(user: User) {
+    this.currentUser = user;
   }
 
   isSignInWithEmailLink(link: string): boolean {

@@ -1,10 +1,12 @@
 import { ReactElement, useEffect, useState } from "react";
 import {
   createConcept,
+  createUser,
+  findUser,
   getConcept,
   getConceptsByEmail,
 } from "@/lib/AppService";
-import { Concept, getConceptData } from "@/lib/gqlClient";
+import { Concept } from "@/lib/gqlClient";
 import firebaseService from "@/lib/firebaseService";
 
 interface TableProps {}
@@ -13,10 +15,34 @@ export const Table = ({}: TableProps): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
 
   useEffect(() => {
-    const unsubscribe = firebaseService.auth.onAuthStateChanged((user) => {
-      getConceptsByEmail(user?.email ?? "", setConcepts);
-    });
-    return () => unsubscribe(); // unsubscribing from the listener when the component is unmounting.
+    const findConceptsAndUser = firebaseService.auth.onAuthStateChanged(
+      async (user) => {
+        if (user?.email && user?.uid) {
+          const userData = await findUser(user.email, user.uid);
+          if (!userData?.findUser) {
+            console.log("MAKE USERRRRR");
+            const userData = await createUser(user.email, user.email, user.uid);
+            firebaseService.user = {
+              id: userData.createUser.id,
+              name: userData.createUser.name,
+              email: userData.createUser.email,
+              firebase_id: userData.createUser.firebase_id,
+            };
+          } else {
+            console.log("SETUSER");
+            firebaseService.user = {
+              id: userData.findUser.id,
+              name: userData.findUser.name,
+              email: userData.findUser.email,
+              firebase_id: userData.findUser.firebase_id,
+            };
+          }
+          console.log("ITS SET:", firebaseService.currentUser);
+        }
+        getConceptsByEmail(user?.email ?? "", setConcepts);
+      }
+    );
+    return () => findConceptsAndUser(); // unsubscribing from the listener when the component is unmounting.
   }, []);
 
   return (
@@ -51,12 +77,14 @@ export const Table = ({}: TableProps): ReactElement => {
       <div className="flex space-x-5">
         <button
           onClick={async () => {
-            await createConcept(
-              "5788cea0-66c9-4292-9cab-db9d57ba0cfc",
-              "art",
-              "me",
-              "urlurlurlulr"
-            );
+            if (firebaseService.currentUser)
+              await createConcept(
+                firebaseService.currentUser.id,
+                undefined,
+                "art",
+                "me",
+                "urlurlurlulr"
+              );
           }}
         >
           create
@@ -73,7 +101,7 @@ export const Table = ({}: TableProps): ReactElement => {
             await firebaseService.signInWithPopup();
           }}
         >
-          login
+          login/signup
         </button>
         <button
           onClick={async () => {

@@ -102,6 +102,7 @@ export const CREATE_CONCEPT = gql`
       title
       artist
       url
+      owner_id
     }
   }
 `;
@@ -113,6 +114,7 @@ export interface createConceptData {
     title?: string;
     artist?: string;
     url?: string;
+    owner_id: string;
   };
 }
 
@@ -122,6 +124,7 @@ export interface createConceptVariables {
     title?: string;
     artist?: string;
     url?: string;
+    owner_id: string;
   };
 }
 
@@ -151,4 +154,29 @@ export interface createUserVariables {
     email: string;
     firebase_id: string;
   };
+}
+
+export const FIND_USER = gql`
+  query findUser($email: String!, $firebase_id: String!) {
+    findUser(email: $email, firebase_id: $firebase_id) {
+      id
+      name
+      email
+      firebase_id
+    }
+  }
+`;
+
+export interface findUserData {
+  findUser: {
+    id: string;
+    name: string;
+    email: string;
+    firebase_id: string;
+  };
+}
+
+export interface findUserVariables {
+  email: string;
+  firebase_id: string;
 }

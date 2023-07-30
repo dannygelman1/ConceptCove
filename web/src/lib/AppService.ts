@@ -15,12 +15,16 @@ import {
   getConceptByEmailData,
   getConceptByEmailVariables,
   GET_CONCEPTS_BY_EMAIL,
+  findUserData,
+  FIND_USER,
+  findUserVariables,
 } from "@/lib/gqlClient";
 import { Dispatch, SetStateAction } from "react";
 
 const gql = new GQLClient();
 
 export const createConcept = async (
+  owner_id: string,
   image_id?: string,
   title?: string,
   artist?: string,
@@ -35,6 +39,7 @@ export const createConcept = async (
       title,
       artist,
       url,
+      owner_id,
     },
   });
   return conceptData;
@@ -71,6 +76,20 @@ export const createUser = async (
         email,
         firebase_id,
       },
+    }
+  );
+  return userData;
+};
+
+export const findUser = async (
+  email: string,
+  firebase_id: string
+): Promise<findUserData | undefined> => {
+  const userData = await gql.request<findUserData, findUserVariables>(
+    FIND_USER,
+    {
+      email,
+      firebase_id,
     }
   );
   return userData;
