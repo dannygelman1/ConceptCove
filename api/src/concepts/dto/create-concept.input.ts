@@ -13,4 +13,7 @@ export class CreateConceptInput {
 
   @Field({ description: 'Url to the concept art', nullable: true })
   url?: string;
+
+  @Field({ description: 'Id of the user who made the concept', nullable: true })
+  owner_id: string;
 }

@@ -18,6 +18,7 @@ export class ConceptsService {
     concept.title = createConceptInput.title;
     concept.artist = createConceptInput.artist;
     concept.url = createConceptInput.url;
+    concept.owner_id = createConceptInput.owner_id;
     concept = await this.conceptsRepository.save(concept);
     return concept;
   }
