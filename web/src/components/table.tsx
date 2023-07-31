@@ -8,11 +8,15 @@ import {
 } from "@/lib/AppService";
 import { Concept } from "@/lib/gqlClient";
 import firebaseService from "@/lib/firebaseService";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { firebaseStorage } from "@/lib/firebase";
+import Image from "next/image";
 
 interface TableProps {}
 
 export const Table = ({}: TableProps): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [urlImage, setUrl] = useState<string>("");
 
   useEffect(() => {
     const findConceptsAndUser = firebaseService.auth.onAuthStateChanged(
@@ -44,7 +48,14 @@ export const Table = ({}: TableProps): ReactElement => {
     );
     return () => findConceptsAndUser(); // unsubscribing from the listener when the component is unmounting.
   }, []);
-
+  const listRef = ref(firebaseStorage, "qwpefjqpgui");
+  listAll(listRef).then((res) => {
+    res.items.forEach(async (itemRef) => {
+      console.log("hi2", itemRef);
+      const url = await getDownloadURL(itemRef);
+      setUrl(url);
+    });
+  });
   return (
     <div className="bg-green-200 absolute flex flex-col justify-center w-full">
       <h1 className="font-bold text-2xl text-center p-16">Concept Cove</h1>
@@ -110,6 +121,15 @@ export const Table = ({}: TableProps): ReactElement => {
         >
           logout
         </button>
+        <input
+          type="file"
+          onChange={async (event) => {
+            const files = event.target.files;
+            if (!files || files?.length === 0) return;
+            firebaseService.uploadFile("qwpefjqpgui", files[0]);
+          }}
+        />
+        <Image src={urlImage} width={100} height={100} alt="image" />
       </div>
     </div>
   );

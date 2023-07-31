@@ -6,8 +6,8 @@ import {
   signInWithPopup,
   Unsubscribe,
 } from "@firebase/auth";
-
-import firebase from "@/lib/firebase";
+import { firebaseApp, firebaseStorage } from "./firebase";
+import { ref, uploadBytes } from "firebase/storage";
 
 export interface User {
   id: string;
@@ -18,7 +18,7 @@ export interface User {
 
 class FirebaseService {
   currentUser: User | undefined;
-  readonly auth: Auth = getAuth(firebase);
+  readonly auth: Auth = getAuth(firebaseApp);
   private readonly provider: GoogleAuthProvider = new GoogleAuthProvider();
 
   onAuthStateChanged(fn: (loggedIn: boolean) => void): Unsubscribe {
@@ -44,6 +44,13 @@ class FirebaseService {
 
   signOut(): Promise<void> {
     return this.auth.signOut();
+  }
+
+  uploadFile(imageId: string, file: File) {
+    const testRef = ref(firebaseStorage, `${imageId}/${file.name}`);
+    uploadBytes(testRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!: ", snapshot);
+    });
   }
 }
 

@@ -14,4 +14,7 @@ module.exports = {
       },
     ];
   },
+  images: {
+    domains: ["firebasestorage.googleapis.com"], // Add the Firebase Storage domain here
+  },
 };
