@@ -23,4 +23,8 @@ export class ImagesService {
   findOneById(id: string): Promise<Image | null> {
     return this.imagesRepository.findOneBy({ id });
   }
+
+  findAll(): Promise<Image[]> {
+    return this.imagesRepository.find();
+  }
 }
