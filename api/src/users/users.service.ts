@@ -12,13 +12,13 @@ export class UsersService {
   ) {}
 
   async create(createUserInput: CreateUserInput) {
-    let concept = new User();
+    let user = new User();
 
-    concept.name = createUserInput.name;
-    concept.email = createUserInput.email;
-    concept.firebase_id = createUserInput.firebase_id;
-    concept = await this.usersRepository.save(concept);
-    return concept;
+    user.name = createUserInput.name;
+    user.email = createUserInput.email;
+    user.firebase_id = createUserInput.firebase_id;
+    user = await this.usersRepository.save(user);
+    return user;
   }
 
   findOneByEmailAndFirebaseId(
