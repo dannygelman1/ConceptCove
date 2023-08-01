@@ -4,6 +4,7 @@ import {
   RequestDocument,
   Variables,
 } from "graphql-request";
+import { Concept } from "./types";
 
 export class GQLClient {
   private readonly gqlClient: GraphQLClient;
@@ -84,15 +85,6 @@ export const GET_CONCEPTS = gql`
 export interface getConceptsData {
   allConcepts: Concept[];
 }
-
-export type Concept = {
-  id: string;
-  image_id?: string;
-  title?: string;
-  artist?: string;
-  url?: string;
-  owner_id: string;
-};
 
 export const CREATE_CONCEPT = gql`
   mutation createConcept($createConceptInput: CreateConceptInput!) {
@@ -179,4 +171,46 @@ export interface findUserData {
 export interface findUserVariables {
   email: string;
   firebase_id: string;
+}
+
+export type Image = {
+  id: string;
+  name: string;
+  extension: string;
+  url?: string;
+};
+
+export const CREATE_IMAGE = gql`
+  mutation createImage($createImageInput: CreateImageInput!) {
+    createImage(createImageInput: $createImageInput) {
+      id
+      name
+      extension
+    }
+  }
+`;
+
+export interface createImageData {
+  createImage: Image;
+}
+
+export interface createImageVariables {
+  createImageInput: {
+    name: string;
+    extension: string;
+  };
+}
+
+export const GET_IMAGES = gql`
+  query getImages {
+    findAllImage {
+      id
+      name
+      extension
+    }
+  }
+`;
+
+export interface getImagesData {
+  findAllImage: Image[];
 }

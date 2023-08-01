@@ -8,13 +8,7 @@ import {
 } from "@firebase/auth";
 import { firebaseApp, firebaseStorage } from "./firebase";
 import { ref, uploadBytes } from "firebase/storage";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  firebase_id: string;
-}
+import { User } from "@/models/user";
 
 class FirebaseService {
   currentUser: User | undefined;

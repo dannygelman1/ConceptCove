@@ -6,9 +6,6 @@ import {
   createConceptData,
   createConceptVariables,
   GQLClient,
-  getConceptsData,
-  GET_CONCEPTS,
-  Concept,
   CREATE_USER,
   createUserVariables,
   createUserData,
@@ -18,27 +15,29 @@ import {
   findUserData,
   FIND_USER,
   findUserVariables,
+  createImageData,
+  createImageVariables,
+  CREATE_IMAGE,
+  getImagesData,
+  GET_IMAGES,
 } from "@/lib/gqlClient";
-import { Dispatch, SetStateAction } from "react";
+import { ConceptInput } from "./types";
 
 const gql = new GQLClient();
 
 export const createConcept = async (
   owner_id: string,
-  image_id?: string,
-  title?: string,
-  artist?: string,
-  url?: string
-): Promise<createConceptData> => {
+  concept: ConceptInput
+): Promise<createConceptData | null> => {
   const conceptData = await gql.request<
     createConceptData,
     createConceptVariables
   >(CREATE_CONCEPT, {
     createConceptInput: {
-      image_id,
-      title,
-      artist,
-      url,
+      image_id: concept.imageId,
+      title: concept.title,
+      artist: concept.artist,
+      url: concept.url,
       owner_id,
     },
   });
@@ -53,14 +52,6 @@ export const getConcept = async (id: string): Promise<getConceptData> => {
     }
   );
   return conceptData;
-};
-
-export const getConcepts = async (
-  setConcepts: Dispatch<SetStateAction<Concept[]>>
-): Promise<getConceptsData> => {
-  const conceptsData = await gql.request<getConceptsData>(GET_CONCEPTS);
-  setConcepts(conceptsData.allConcepts);
-  return conceptsData;
 };
 
 export const createUser = async (
@@ -96,17 +87,34 @@ export const findUser = async (
 };
 
 export const getConceptsByEmail = async (
-  email: string,
-  setConcepts: Dispatch<SetStateAction<Concept[]>>
-): Promise<getConceptByEmailData> => {
-  console.log("HERE", email);
+  email: string
+): Promise<getConceptByEmailData | null> => {
   const conceptsData = await gql.request<
     getConceptByEmailData,
     getConceptByEmailVariables
   >(GET_CONCEPTS_BY_EMAIL, {
     email,
   });
-  console.log("DATA", conceptsData.conceptsByEmail);
-  setConcepts(conceptsData.conceptsByEmail ?? []);
   return conceptsData;
+};
+
+export const createImage = async (
+  name: string,
+  extension: string
+): Promise<createImageData> => {
+  const imageData = await gql.request<createImageData, createImageVariables>(
+    CREATE_IMAGE,
+    {
+      createImageInput: {
+        name,
+        extension,
+      },
+    }
+  );
+  return imageData;
+};
+
+export const findAllImages = async (): Promise<getImagesData> => {
+  const getImagesData = await gql.request<getImagesData>(GET_IMAGES);
+  return getImagesData;
 };
