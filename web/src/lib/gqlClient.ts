@@ -4,7 +4,7 @@ import {
   RequestDocument,
   Variables,
 } from "graphql-request";
-import { Concept } from "./types";
+import { Concept, UserType } from "./types";
 
 export class GQLClient {
   private readonly gqlClient: GraphQLClient;
@@ -102,7 +102,7 @@ export const CREATE_CONCEPT = gql`
 export interface createConceptData {
   createConcept: {
     id: string;
-    image_id?: string;
+    image_id: string | null;
     title?: string;
     artist?: string;
     url?: string;
@@ -112,7 +112,7 @@ export interface createConceptData {
 
 export interface createConceptVariables {
   createConceptInput: {
-    image_id?: string;
+    image_id: string | null;
     title?: string;
     artist?: string;
     url?: string;
@@ -132,12 +132,7 @@ export const CREATE_USER = gql`
 `;
 
 export interface createUserData {
-  createUser: {
-    id: string;
-    name: string;
-    email: string;
-    firebase_id: string;
-  };
+  createUser: UserType;
 }
 
 export interface createUserVariables {
@@ -160,12 +155,7 @@ export const FIND_USER = gql`
 `;
 
 export interface findUserData {
-  findUser: {
-    id: string;
-    name: string;
-    email: string;
-    firebase_id: string;
-  };
+  findUser: UserType;
 }
 
 export interface findUserVariables {

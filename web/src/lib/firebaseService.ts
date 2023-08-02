@@ -22,7 +22,7 @@ class FirebaseService {
     );
   }
 
-  set user(user: User) {
+  set user(user: User | undefined) {
     this.currentUser = user;
   }
 
