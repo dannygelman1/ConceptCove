@@ -242,7 +242,7 @@ export interface updateConceptVariables {
 
 export const DELETE_CONCEPT = gql`
   mutation deleteConcept($id: String!) {
-    deleteBox(id: $id)
+    deleteConcept(id: $id)
   }
 `;
 

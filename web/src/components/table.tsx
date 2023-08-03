@@ -157,6 +157,7 @@ export const Table = ({}: TableProps): ReactElement => {
                           setTitle(concept.title);
                           setArtist(concept.artist);
                           setUrl(concept.url);
+                          setImageId(concept.image_id);
                         }}
                       >
                         <EditIcon />
@@ -197,15 +198,31 @@ export const Table = ({}: TableProps): ReactElement => {
                         </div>
                       </td>
                       <td className="p-4 text-center">
-                        <input type="text" defaultValue={concept.title} />
+                        <input
+                          type="text"
+                          defaultValue={concept.title}
+                          onChange={(e) => {
+                            setTitle(e.target.value);
+                          }}
+                        />
                       </td>
                       <td className="p-4 text-center">
-                        <input type="text" defaultValue={concept.artist} />
+                        <input
+                          type="text"
+                          defaultValue={concept.artist}
+                          onChange={(e) => {
+                            setArtist(e.target.value);
+                          }}
+                        />
                       </td>
                       <td className="p-4 text-center">
-                        <a href="link-url">
-                          <input type="text" defaultValue={concept.url} />
-                        </a>
+                        <input
+                          type="text"
+                          defaultValue={concept.url}
+                          onChange={(e) => {
+                            setUrl(e.target.value);
+                          }}
+                        />
                       </td>
                       <td className="p-4 justify-center items-center">
                         <button
