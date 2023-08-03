@@ -6,6 +6,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { InputForm } from "./inputForm";
 import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
+import cn from "classnames";
 
 interface TableProps {}
 
@@ -50,61 +51,78 @@ export const Table = ({}: TableProps): ReactElement => {
   }, []);
 
   return (
-    <div className="bg-green-200 absolute flex flex-col justify-center w-full">
+    <div className="bg-white absolute flex flex-col justify-center w-full pb-10">
       <div className="flex space-x-5 justify-end p-4">
         {user && (
           <Dialog.Root>
             <Dialog.Trigger>
-              <div>create</div>
+              <div className="font-light text-lg hover:text-slate-500">
+                CREATE
+              </div>
             </Dialog.Trigger>
             <InputForm />
           </Dialog.Root>
         )}
         {user ? (
-          <span>{user.name}</span>
+          <span className="font-light text-lg">{user.name.toUpperCase()}</span>
         ) : (
           <button
+            className="font-light text-lg hover:text-slate-500"
             onClick={async () => {
               await firebaseService.signInWithPopup();
             }}
           >
-            login/signup
+            LOGIN/SIGNUP
           </button>
         )}
         <button
+          className="font-light text-lg hover:text-slate-500"
           onClick={async () => {
             await firebaseService.signOut();
           }}
         >
-          logout
+          LOGOUT
         </button>
       </div>
       <div className="flex flex-col space-y-4">
-        <h1 className="font-bold text-2xl text-center p-16">Concept Cove</h1>
-        <table className="border-separate border-spacing-4 px-20 border-red-100 outline-1">
-          <thead>
+        <h1 className="font-thin text-4xl text-center p-10">CONCEPT COVE</h1>
+        <table className="border-collapse px-20 table-fixed mx-20">
+          <thead className={"bg-slate-300"}>
             <tr>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Artist</th>
-              <th>Link</th>
+              <th className="w-[400px]  font-thin text-2xl">IMAGE</th>
+              <th className="w-[400px]  font-thin text-2xl">NAME</th>
+              <th className="w-[400px]  font-thin text-2xl">ARTIST</th>
+              <th className="w-[400px]  font-thin text-2xl">LINK</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {concepts.map((concept, i) => (
-              <tr key={i}>
-                <td className="p-4 text-center">
-                  <Image
-                    className="w-[300px] h-[200px] object-contain"
-                    src={concept.imageUrl ?? "/pink.png"}
-                    alt="Image"
-                    width={300}
-                    height={200}
-                  />
+              <tr
+                key={i}
+                className={cn({
+                  "bg-slate-200": i % 2 === 0,
+                  "bg-slate-100": i % 2 === 1,
+                })}
+              >
+                <td className="p-4 text-center flex items-center justify-center ">
+                  <div
+                    className="relative w-[75px] h-[75px] rounded"
+                    style={{ overflow: "hidden" }}
+                  >
+                    <Image
+                      src={concept.imageUrl ?? "/pink.png"}
+                      alt="Image"
+                      // width={200}
+                      // height={200}
+                      objectFit="cover"
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                 </td>
-                <td className="p-4 text-center">{concept.title}</td>
-                <td className="p-4 text-center">{concept.artist}</td>
-                <td className="p-4 text-center">
+                <td className="p-4 text-center ">{concept.title}</td>
+                <td className="p-4 text-center ">{concept.artist}</td>
+                <td className="p-4 text-center ">
                   <a href="link-url">{concept.url}</a>
                 </td>
               </tr>
