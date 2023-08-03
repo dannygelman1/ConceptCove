@@ -3,7 +3,10 @@ import { InputType, Field, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateConceptInput extends PartialType(CreateConceptInput) {
-  @Field({ description: 'ID of the concept art image', nullable: true })
+  @Field({ description: 'ID of the concept art image' })
+  id!: string;
+
+  @Field({ description: 'image_id of the concept art image', nullable: true })
   image_id?: string;
 
   @Field({ description: 'Title of the concept art', nullable: true })

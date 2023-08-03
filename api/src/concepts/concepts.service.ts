@@ -41,7 +41,28 @@ export class ConceptsService {
     return concepts;
   }
 
-  // async findByEmail(): Promise<Concept[]> {
-  //   return this.conceptsRepository.findBy({ email });
-  // }
+  async updateTitle(id: string, title?: string): Promise<Concept> {
+    await this.conceptsRepository.update({ id }, { title });
+    return this.conceptsRepository.findOneBy({ id });
+  }
+
+  async updateArtist(id: string, artist?: string): Promise<Concept> {
+    await this.conceptsRepository.update({ id }, { artist });
+    return this.conceptsRepository.findOneBy({ id });
+  }
+
+  async updateUrl(id: string, url?: string): Promise<Concept> {
+    await this.conceptsRepository.update({ id }, { url });
+    return this.conceptsRepository.findOneBy({ id });
+  }
+
+  async updateImageId(id: string, image_id?: string): Promise<Concept> {
+    await this.conceptsRepository.update({ id }, { image_id });
+    return this.conceptsRepository.findOneBy({ id });
+  }
+
+  async delete(id: string): Promise<string> {
+    await this.conceptsRepository.delete({ id });
+    return id;
+  }
 }
