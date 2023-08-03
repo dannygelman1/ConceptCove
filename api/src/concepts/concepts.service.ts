@@ -61,6 +61,19 @@ export class ConceptsService {
     return this.conceptsRepository.findOneBy({ id });
   }
 
+  async updateAll(id: string, updateConceptInput): Promise<Concept> {
+    await this.conceptsRepository.update(
+      { id },
+      {
+        image_id: updateConceptInput.image_id,
+        title: updateConceptInput.title,
+        artist: updateConceptInput.artist,
+        url: updateConceptInput.url,
+      },
+    );
+    return this.conceptsRepository.findOneBy({ id });
+  }
+
   async delete(id: string): Promise<string> {
     await this.conceptsRepository.delete({ id });
     return id;

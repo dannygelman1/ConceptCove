@@ -57,6 +57,7 @@ export const GET_CONCEPTS_BY_EMAIL = gql`
       artist
       url
       owner_id
+      createdAt
     }
   }
 `;
@@ -203,4 +204,52 @@ export const GET_IMAGES = gql`
 
 export interface getImagesData {
   findAllImage: Image[];
+}
+
+export const UPDATE_CONCEPT = gql`
+  mutation updateConcept($updateConceptInput: UpdateConceptInput!) {
+    updateConcept(updateConceptInput: $updateConceptInput) {
+      id
+      image_id
+      title
+      artist
+      url
+      owner_id
+    }
+  }
+`;
+
+export interface updateConceptData {
+  updateConcept: {
+    id: string;
+    image_id: string | null;
+    title: string | null;
+    artist: string | null;
+    url: string | null;
+    owner_id: string;
+  };
+}
+
+export interface updateConceptVariables {
+  updateConceptInput: {
+    id: string;
+    image_id: string | null;
+    title?: string;
+    artist?: string;
+    url?: string;
+  };
+}
+
+export const DELETE_CONCEPT = gql`
+  mutation deleteConcept($id: String!) {
+    deleteBox(id: $id)
+  }
+`;
+
+export interface deleteConceptData {
+  id: string;
+}
+
+export interface deleteConceptVariables {
+  id: string;
 }

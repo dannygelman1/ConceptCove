@@ -20,8 +20,14 @@ import {
   CREATE_IMAGE,
   getImagesData,
   GET_IMAGES,
+  updateConceptData,
+  updateConceptVariables,
+  UPDATE_CONCEPT,
+  deleteConceptVariables,
+  DELETE_CONCEPT,
+  deleteConceptData,
 } from "@/lib/gqlClient";
-import { Concept, ConceptInput, UserType } from "./types";
+import { Concept, ConceptInput, UpdateConceptInput, UserType } from "./types";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { firebaseStorage } from "./firebase";
 
@@ -31,7 +37,6 @@ export const createConcept = async (
   owner_id: string,
   concept: ConceptInput
 ): Promise<createConceptData | null> => {
-  console.log("concept.imageId", concept.imageId);
   const conceptData = await gql.request<
     createConceptData,
     createConceptVariables
@@ -43,6 +48,34 @@ export const createConcept = async (
       url: concept.url,
       owner_id,
     },
+  });
+  return conceptData;
+};
+
+export const updateConcept = async (
+  concept: UpdateConceptInput
+): Promise<updateConceptData | null> => {
+  const conceptData = await gql.request<
+    updateConceptData,
+    updateConceptVariables
+  >(UPDATE_CONCEPT, {
+    updateConceptInput: {
+      id: concept.id,
+      image_id: concept.imageId ?? null,
+      title: concept.title,
+      artist: concept.artist,
+      url: concept.url,
+    },
+  });
+  return conceptData;
+};
+
+export const deleteConcept = async (id: string): Promise<deleteConceptData> => {
+  const conceptData = await gql.request<
+    deleteConceptData,
+    deleteConceptVariables
+  >(DELETE_CONCEPT, {
+    id,
   });
   return conceptData;
 };
@@ -130,7 +163,6 @@ export const getConcepts = async (
     async (concept) => {
       let conceptWithImage = concept;
       if (concept.image_id) {
-        console.log("IMAGE IDconcept.imageId", concept.image_id);
         const listRef = ref(firebaseStorage, concept.image_id);
         const listUrls = await listAll(listRef);
         if (listUrls.items.length > 0) {

@@ -22,7 +22,6 @@ export class User {
       async (concept) => {
         let conceptWithImage = concept;
         if (concept.image_id) {
-          console.log("IMAGE IDconcept.imageId", concept.image_id);
           const listRef = ref(firebaseStorage, concept.image_id);
           const listUrls = await listAll(listRef);
           if (listUrls.items.length > 0) {

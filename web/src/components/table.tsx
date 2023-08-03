@@ -1,5 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
-import { createUser, findUser, getConcept } from "@/lib/AppService";
+import {
+  createUser,
+  deleteConcept,
+  findUser,
+  getConcept,
+  updateConcept,
+} from "@/lib/AppService";
 import Image from "next/image";
 import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -16,6 +22,11 @@ export const Table = ({}: TableProps): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [editRowId, setEditRowId] = useState<string>("");
+  const [title, setTitle] = useState<string | undefined>(undefined);
+  const [artist, setArtist] = useState<string | undefined>(undefined);
+  const [url, setUrl] = useState<string | undefined>(undefined);
+  const [imageId, setImageId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const findConceptsAndUser = firebaseService.auth.onAuthStateChanged(
@@ -101,48 +112,126 @@ export const Table = ({}: TableProps): ReactElement => {
             </tr>
           </thead>
           <tbody>
-            {concepts.map((concept, i) => {
-              return (
-                i >= (pageNumber - 1) * 4 &&
-                i < (pageNumber - 1) * 4 + 4 && (
-                  <tr
-                    key={i}
-                    className={cn("h-[107px]", {
-                      "bg-slate-200": i % 2 === 0,
-                      "bg-slate-100": i % 2 === 1,
-                    })}
-                  >
-                    <td className="p-4 text-center flex items-center justify-center ">
-                      <div
-                        className="relative w-[75px] h-[75px] rounded"
-                        style={{ overflow: "hidden" }}
+            {concepts
+              .sort(
+                (a, b) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .map((concept, i) => {
+                return (
+                  i >= (pageNumber - 1) * 4 &&
+                  i < (pageNumber - 1) * 4 + 4 &&
+                  (editRowId !== concept.id ? (
+                    <tr
+                      key={i}
+                      className={cn({
+                        "bg-slate-200": i % 2 === 0,
+                        "bg-slate-100": i % 2 === 1,
+                      })}
+                    >
+                      <td className="p-4 text-center flex items-center justify-center ">
+                        <div
+                          className="relative w-[75px] h-[75px] rounded"
+                          style={{ overflow: "hidden" }}
+                        >
+                          <Image
+                            sizes="(max-width: 75px) 100vw"
+                            src={concept.imageUrl ?? "/pink.png"}
+                            alt="Image"
+                            objectFit="cover"
+                            fill
+                            style={{ objectFit: "cover" }}
+                          />
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">{concept.title}</td>
+                      <td className="p-4 text-center">{concept.artist}</td>
+                      <td className="p-4 text-center">
+                        <a href="link-url">{concept.url}</a>
+                      </td>
+                      <td
+                        className="p-4 justify-center items-center"
+                        onClick={() => {
+                          setEditRowId(concept.id);
+                          setTitle(concept.title);
+                          setArtist(concept.artist);
+                          setUrl(concept.url);
+                        }}
                       >
-                        <Image
-                          src={concept.imageUrl ?? "/pink.png"}
-                          alt="Image"
-                          objectFit="cover"
-                          fill
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                    </td>
-                    <td className="p-4 text-center">{concept.title}</td>
-                    <td className="p-4 text-center">{concept.artist}</td>
-                    <td className="p-4 text-center">
-                      <a href="link-url">{concept.url}</a>
-                    </td>
-                    <td className="p-4 justify-center items-center">
-                      <EditIcon />
-                    </td>
-                    <td className="p-4 justify-center items-center">
-                      {/* <div className="flex justify-center items-center w-[75px] h-[75px]"> */}
-                      <TrashIcon />
-                      {/* </div> */}
-                    </td>
-                  </tr>
-                )
-              );
-            })}
+                        <EditIcon />
+                      </td>
+                      <td
+                        className="p-4 justify-center items-center"
+                        onClick={() => {
+                          deleteConcept(concept.id);
+                          setConcepts((prev) =>
+                            prev.filter((c) => concept.id !== c.id)
+                          );
+                        }}
+                      >
+                        <TrashIcon />
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr
+                      key={i}
+                      className={cn({
+                        "bg-slate-200": i % 2 === 0,
+                        "bg-slate-100": i % 2 === 1,
+                      })}
+                    >
+                      <td className="p-4 text-center flex items-center justify-center ">
+                        <div
+                          className="relative w-[75px] h-[75px] rounded"
+                          style={{ overflow: "hidden" }}
+                        >
+                          <Image
+                            src={concept.imageUrl ?? "/pink.png"}
+                            sizes="(max-width: 75px) 100vw"
+                            alt="Image"
+                            objectFit="cover"
+                            fill
+                            style={{ objectFit: "cover" }}
+                          />
+                        </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <input type="text" defaultValue={concept.title} />
+                      </td>
+                      <td className="p-4 text-center">
+                        <input type="text" defaultValue={concept.artist} />
+                      </td>
+                      <td className="p-4 text-center">
+                        <a href="link-url">
+                          <input type="text" defaultValue={concept.url} />
+                        </a>
+                      </td>
+                      <td className="p-4 justify-center items-center">
+                        <button
+                          onClick={() => {
+                            setEditRowId("");
+                            updateConcept({
+                              id: concept.id,
+                              title,
+                              artist,
+                              url,
+                              imageId,
+                            });
+                          }}
+                        >
+                          <EditIcon />
+                        </button>
+                      </td>
+                      <td className="p-4 justify-center items-center">
+                        {/* <div className="flex justify-center items-center w-[75px] h-[75px]"> */}
+                        <TrashIcon />
+                        {/* </div> */}
+                      </td>
+                    </tr>
+                  ))
+                );
+              })}
           </tbody>
         </table>
         <div className="flex flex-row space-x-2 items-center">

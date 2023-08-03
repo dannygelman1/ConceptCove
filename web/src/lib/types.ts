@@ -17,9 +17,18 @@ export type Concept = {
   url?: string;
   imageUrl?: string;
   owner_id: string;
+  createdAt: string;
 };
 
 export type ConceptInput = {
+  imageId?: string;
+  title?: string;
+  artist?: string;
+  url?: string;
+};
+
+export type UpdateConceptInput = {
+  id: string;
   imageId?: string;
   title?: string;
   artist?: string;

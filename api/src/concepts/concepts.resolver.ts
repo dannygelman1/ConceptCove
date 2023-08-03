@@ -19,30 +19,16 @@ export class ConceptsResolver {
   updateConcept(
     @Args('updateConceptInput') updateConceptInput: UpdateConceptInput,
   ): Promise<Concept> {
-    if (updateConceptInput.title)
-      return this.conceptsService.updateTitle(
-        updateConceptInput.id,
-        updateConceptInput.title,
-      );
-    else if (updateConceptInput.artist)
-      return this.conceptsService.updateArtist(
-        updateConceptInput.id,
-        updateConceptInput.artist,
-      );
-    else if (updateConceptInput.url)
-      return this.conceptsService.updateUrl(
-        updateConceptInput.id,
-        updateConceptInput.url,
-      );
-    else
-      return this.conceptsService.updateUrl(
-        updateConceptInput.id,
-        updateConceptInput.image_id,
-      );
+    return this.conceptsService.updateAll(
+      updateConceptInput.id,
+      updateConceptInput,
+    );
   }
 
   @Mutation(() => ID)
-  deleteBox(@Args('id', { type: () => String }) id: string): Promise<string> {
+  deleteConcept(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<string> {
     return this.conceptsService.delete(id);
   }
 

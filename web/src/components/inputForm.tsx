@@ -26,7 +26,7 @@ const ConceptForm = (): ReactElement => {
     <form
       className="p-4"
       onSubmit={async (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         if (firebaseService.currentUser) {
           console.log("CREATE");
           await createConcept(firebaseService.currentUser.id, {
@@ -36,6 +36,7 @@ const ConceptForm = (): ReactElement => {
             url,
           });
           console.log("DONE");
+          window.location.reload();
         }
       }}
     >
