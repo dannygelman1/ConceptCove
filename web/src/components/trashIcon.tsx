@@ -1,9 +1,14 @@
 import { ReactElement } from "react";
+import cn from "classnames";
 
-export const TrashIcon = (): ReactElement => {
+interface TrashIconProps {
+  className?: string;
+}
+
+export const TrashIcon = ({ className }: TrashIconProps): ReactElement => {
   return (
     <svg
-      className="w-4 h-4"
+      className={cn(className, "w-4 h-4")}
       width="800px"
       height="800px"
       viewBox="0 0 24 24"

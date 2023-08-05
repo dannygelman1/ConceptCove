@@ -7,7 +7,7 @@ import cn from "classnames";
 export const InputForm = (): ReactElement => {
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="bg-gray-400/30 fixed inset-0" />
+      <Dialog.Overlay className="bg-gray-400/60 fixed inset-0" />
       <Dialog.Content className="bg-white rounded-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vh] max-w-[450px] max-h-[85vh] flex justify-center">
         <ConceptForm />
         <Dialog.Close />
@@ -42,39 +42,39 @@ const ConceptForm = (): ReactElement => {
     >
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col justify-between">
-          <div className="text-xs text-black">Title</div>
+          <div className="text-xs text-black">TITLE</div>
           <div>
             <input
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
-              className="border-black border-2 rounded-md focus:outline-none"
+              className="border-slate-600 border-2 rounded-md focus:outline-none"
               required
             />
           </div>
         </div>
         <div className="flex flex-col justify-between">
-          <div className="text-xs text-black">Artist</div>
+          <div className="text-xs text-black">ARTIST</div>
           <input
             onChange={(e) => {
               setArtist(e.target.value);
             }}
-            className="border-black border-2 rounded-md focus:outline-none"
+            className="border-slate-600 border-2 rounded-md focus:outline-none"
             required
           />
         </div>
         <div className="flex flex-col justify-between">
-          <div className="text-xs text-black">Url</div>
+          <div className="text-xs text-black">URL</div>
           <input
             onChange={(e) => {
               setUrl(e.target.value);
             }}
-            className="border-black border-2 rounded-md focus:outline-none"
+            className="border-slate-600 border-2 rounded-md focus:outline-none"
             required
           />
         </div>
         <div className="flex flex-col justify-between">
-          <div className="text-xs text-black">Url</div>
+          <div className="text-xs text-black">IMAGE</div>
           <div className="flex flex-row space-x-2 w-full">
             <input
               type="file"

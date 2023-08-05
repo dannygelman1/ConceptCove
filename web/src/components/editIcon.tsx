@@ -1,13 +1,19 @@
 import { ReactElement } from "react";
+import cn from "classnames";
 
-export const EditIcon = (): ReactElement => {
+interface EditIconProps {
+  className?: string;
+}
+
+export const EditIcon = ({ className }: EditIconProps): ReactElement => {
   return (
     <svg
-      className="w-4 h-4"
+      className={cn(className, "w-4 h-4")}
       width="800px"
       height="800px"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
+      color="currentColor"
     >
       <title />
 

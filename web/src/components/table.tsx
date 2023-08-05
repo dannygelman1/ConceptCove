@@ -30,6 +30,8 @@ export const FullTable = ({ concepts, setConcepts }: FullTableProps) => {
               i >= (pageNumber - 1) * 4 &&
               i < (pageNumber - 1) * 4 + 4 && (
                 <Row
+                  key={i}
+                  totalConcepts={concepts.length}
                   concept={concept}
                   i={i}
                   setConcepts={setConcepts}
@@ -42,7 +44,7 @@ export const FullTable = ({ concepts, setConcepts }: FullTableProps) => {
       </Table>
       <div className="flex flex-row space-x-2 items-center">
         <button
-          className="bg-gray-500 rounded-sm p-2 disabled:bg-slate-300"
+          className="bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md p-2 disabled:bg-slate-200 disabled:text-slate-400"
           onClick={() => {
             setPageNumber((prev) => prev - 1);
           }}
@@ -52,7 +54,7 @@ export const FullTable = ({ concepts, setConcepts }: FullTableProps) => {
         </button>
         <span>{pageNumber}</span>
         <button
-          className="bg-gray-500 rounded-sm p-2  disabled:bg-slate-300"
+          className="bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md p-2  disabled:bg-slate-200 disabled:text-slate-400"
           onClick={() => {
             setPageNumber((prev) => prev + 1);
           }}
@@ -71,8 +73,8 @@ interface TableProps {
 
 export const Table = ({ children }: TableProps): ReactElement => {
   return (
-    <div className="w-full flex flex-col">
-      <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14">
+    <div className="w-full flex flex-col rounded-md">
+      <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14 rounded-t-md">
         <div className="font-thin text-2xl w-1/4 truncate">IMAGE</div>
         <div className="font-thin text-2xl w-1/4 truncate">
           <span className="font-thin text-2xl">NAME</span>

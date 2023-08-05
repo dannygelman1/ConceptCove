@@ -24,6 +24,8 @@ import { EditIcon } from "./editIcon";
 import { TrashIcon } from "./trashIcon";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { firebaseStorage } from "@/lib/firebase";
+import { SaveIcon } from "./saveIcon";
+import { EscapeIcon } from "./escapeIcon";
 
 interface RowProps {
   concept: Concept;
@@ -31,6 +33,7 @@ interface RowProps {
   editRowId: string;
   setEditRowId: Dispatch<SetStateAction<string>>;
   i: number;
+  totalConcepts: number;
 }
 
 export const Row = ({
@@ -38,6 +41,7 @@ export const Row = ({
   setConcepts,
   editRowId,
   setEditRowId,
+  totalConcepts,
   i,
 }: RowProps) => {
   const [title, setTitle] = useState<string | undefined>(concept.title);
@@ -51,11 +55,12 @@ export const Row = ({
   const [usingImage, setUsingImage] = useState<boolean>(true);
 
   return (
-    <div className="w-full group">
+    <div className={cn("w-full group")}>
       <div
         className={cn(
           "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14",
           {
+            "rounded-b-md": (i + 1) % 4 == 0 || i == totalConcepts - 1,
             "bg-slate-200": i % 2 === 0,
             "bg-slate-100": i % 2 === 1,
           }
@@ -90,34 +95,32 @@ export const Row = ({
         ) : (
           <>
             <div className="w-1/4">
-              <div>select new to replace</div>
-              <input
-                type="file"
-                disabled={!usingImage}
-                className="w-56 text-sm"
-                onChange={async (event) => {
-                  const files = event.target.files;
-                  if (!files || files?.length === 0) return;
-                  setFile(files[0]);
-                }}
-              />
-              <div
-                className="relative w-[50px] h-[50px] rounded"
-                style={{ overflow: "hidden" }}
-              >
-                <Image
-                  sizes="(max-width: 75px) 100vw"
-                  src={imageUrl ?? "/pink.png"}
-                  alt="Image"
-                  objectFit="cover"
-                  fill
-                  style={{ objectFit: "cover" }}
+              <div className="flex flex-col items-start space-y-1">
+                <input
+                  type="file"
+                  className="w-56 text-sm"
+                  disabled={!usingImage}
+                  onChange={async (event) => {
+                    const files = event.target.files;
+                    if (!files || files?.length === 0) return;
+                    setFile(files[0]);
+                  }}
                 />
+                <div className="text-xs">OR</div>
+                <button
+                  className="bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md p-2 text-xs"
+                  onClick={() => {
+                    setFile(undefined);
+                    setUsingImage(!usingImage);
+                  }}
+                >
+                  {usingImage ? "NO IMAGE" : "KEEP IMAGE"}
+                </button>
               </div>
             </div>
             <div className="w-1/4 truncate">
               <input
-                className="w-60"
+                className="w-60 rounded-md"
                 type="text"
                 defaultValue={title}
                 onChange={(e) => {
@@ -147,53 +150,76 @@ export const Row = ({
             </div>
           </>
         )}
-        <div
-          className="absolute -right-6 top-1/2 transform -translate-y-1/2 invisible group-hover:visible"
-          onClick={async () => {
-            if (editRowId !== concept.id) {
-              setEditRowId(concept.id);
-              setTitle(title);
-              setArtist(artist);
-              setUrl(url);
-              setImageId(imageId);
-            } else {
-              setEditRowId("");
-              let newImageId = imageId;
-              if (file) {
-                const lastDotIndex = file.name.lastIndexOf(".");
-                const fileName = file.name.substring(0, lastDotIndex);
-                const fileExtension = file.name.substring(lastDotIndex + 1);
-                const imageData = await createImage(fileName, fileExtension);
-                newImageId = imageData.createImage.id;
-                await firebaseService.uploadFile(newImageId, file);
-                const listRef = ref(firebaseStorage, newImageId);
-                const listUrls = await listAll(listRef);
-                if (listUrls.items.length > 0) {
-                  const imageUrl = await getDownloadURL(listUrls.items[0]);
-                  setImageUrl(imageUrl);
+        {editRowId !== concept.id ? (
+          <>
+            <div
+              className="absolute -right-8 top-1/2 transform -translate-y-1/2 invisible group-hover:visible hover:bg-slate-300 rounded-md p-1"
+              onClick={async () => {
+                setEditRowId(concept.id);
+                setTitle(title);
+                setArtist(artist);
+                setUrl(url);
+                setImageId(imageId);
+              }}
+            >
+              <EditIcon className="text-slate-800 hover:text-slate-300" />
+            </div>
+            <div
+              className="absolute -right-14 top-1/2 transform -translate-y-1/2 invisible group-hover:visible hover:bg-slate-300 rounded-md p-1"
+              onClick={() => {
+                deleteConcept(concept.id);
+                setConcepts((prev) => prev.filter((c) => concept.id !== c.id));
+              }}
+            >
+              <TrashIcon className="text-slate-800 hover:text-slate-700" />
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className="absolute -right-8 top-1/2 transform -translate-y-1/2 invisible group-hover:visible hover:bg-slate-300 rounded-md p-1"
+              onClick={async () => {
+                setEditRowId("");
+                let newImageId = imageId;
+                if (file) {
+                  const lastDotIndex = file.name.lastIndexOf(".");
+                  const fileName = file.name.substring(0, lastDotIndex);
+                  const fileExtension = file.name.substring(lastDotIndex + 1);
+                  const imageData = await createImage(fileName, fileExtension);
+                  newImageId = imageData.createImage.id;
+                  await firebaseService.uploadFile(newImageId, file);
+                  const listRef = ref(firebaseStorage, newImageId);
+                  const listUrls = await listAll(listRef);
+                  if (listUrls.items.length > 0) {
+                    const imageUrl = await getDownloadURL(listUrls.items[0]);
+                    setImageUrl(imageUrl);
+                  }
                 }
-              }
-              updateConcept({
-                id: concept.id,
-                title,
-                artist,
-                url,
-                imageId: newImageId,
-              });
-            }
-          }}
-        >
-          <EditIcon />
-        </div>
-        <div
-          className="absolute -right-12 top-1/2 transform -translate-y-1/2 invisible group-hover:visible"
-          onClick={() => {
-            deleteConcept(concept.id);
-            setConcepts((prev) => prev.filter((c) => concept.id !== c.id));
-          }}
-        >
-          <TrashIcon />
-        </div>
+                if (!usingImage) {
+                  setImageUrl(undefined);
+                  newImageId = undefined;
+                }
+                updateConcept({
+                  id: concept.id,
+                  title,
+                  artist,
+                  url,
+                  imageId: newImageId,
+                });
+              }}
+            >
+              <SaveIcon className="text-slate-800 hover:text-slate-700" />
+            </div>
+            <div
+              className="absolute -right-14 top-1/2 transform -translate-y-1/2 invisible group-hover:visible hover:bg-slate-300 rounded-md p-1"
+              onClick={() => {
+                setEditRowId("");
+              }}
+            >
+              <EscapeIcon className="text-slate-800 hover:text-slate-900" />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
