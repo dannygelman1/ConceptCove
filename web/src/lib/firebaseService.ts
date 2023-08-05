@@ -7,7 +7,7 @@ import {
   Unsubscribe,
 } from "@firebase/auth";
 import { firebaseApp, firebaseStorage } from "./firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, UploadResult } from "firebase/storage";
 import { User } from "@/models/user";
 
 class FirebaseService {
@@ -40,11 +40,9 @@ class FirebaseService {
     return this.auth.signOut();
   }
 
-  uploadFile(imageId: string, file: File) {
+  async uploadFile(imageId: string, file: File) {
     const testRef = ref(firebaseStorage, `${imageId}/${file.name}`);
-    uploadBytes(testRef, file).then((snapshot) => {
-      console.log("Uploaded a blob or file!: ", snapshot);
-    });
+    await uploadBytes(testRef, file);
   }
 }
 

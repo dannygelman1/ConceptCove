@@ -1,20 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
-import {
-  createUser,
-  deleteConcept,
-  findUser,
-  getConcept,
-  updateConcept,
-} from "@/lib/AppService";
-import Image from "next/image";
+import { createUser, findUser } from "@/lib/AppService";
 import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { InputForm } from "./inputForm";
 import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
-import cn from "classnames";
-import { EditIcon } from "./editIcon";
-import { TrashIcon } from "./trashIcon";
+import { Row } from "./row";
 
 interface TableProps {}
 
@@ -121,132 +112,9 @@ export const Table = ({}: TableProps): ReactElement => {
               .map((concept, i) => {
                 return (
                   i >= (pageNumber - 1) * 4 &&
-                  i < (pageNumber - 1) * 4 + 4 &&
-                  (editRowId !== concept.id ? (
-                    <tr
-                      key={i}
-                      className={cn({
-                        "bg-slate-200": i % 2 === 0,
-                        "bg-slate-100": i % 2 === 1,
-                      })}
-                    >
-                      <td className="p-4 text-center flex items-center justify-center ">
-                        <div
-                          className="relative w-[75px] h-[75px] rounded"
-                          style={{ overflow: "hidden" }}
-                        >
-                          <Image
-                            sizes="(max-width: 75px) 100vw"
-                            src={concept.imageUrl ?? "/pink.png"}
-                            alt="Image"
-                            objectFit="cover"
-                            fill
-                            style={{ objectFit: "cover" }}
-                          />
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">{concept.title}</td>
-                      <td className="p-4 text-center">{concept.artist}</td>
-                      <td className="p-4 text-center">
-                        <a href="link-url">{concept.url}</a>
-                      </td>
-                      <td
-                        className="p-4 justify-center items-center"
-                        onClick={() => {
-                          setEditRowId(concept.id);
-                          setTitle(concept.title);
-                          setArtist(concept.artist);
-                          setUrl(concept.url);
-                          setImageId(concept.image_id);
-                        }}
-                      >
-                        <EditIcon />
-                      </td>
-                      <td
-                        className="p-4 justify-center items-center"
-                        onClick={() => {
-                          deleteConcept(concept.id);
-                          setConcepts((prev) =>
-                            prev.filter((c) => concept.id !== c.id)
-                          );
-                        }}
-                      >
-                        <TrashIcon />
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr
-                      key={i}
-                      className={cn({
-                        "bg-slate-200": i % 2 === 0,
-                        "bg-slate-100": i % 2 === 1,
-                      })}
-                    >
-                      <td className="p-4 text-center flex items-center justify-center ">
-                        <div
-                          className="relative w-[75px] h-[75px] rounded"
-                          style={{ overflow: "hidden" }}
-                        >
-                          <Image
-                            src={concept.imageUrl ?? "/pink.png"}
-                            sizes="(max-width: 75px) 100vw"
-                            alt="Image"
-                            objectFit="cover"
-                            fill
-                            style={{ objectFit: "cover" }}
-                          />
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        <input
-                          type="text"
-                          defaultValue={concept.title}
-                          onChange={(e) => {
-                            setTitle(e.target.value);
-                          }}
-                        />
-                      </td>
-                      <td className="p-4 text-center">
-                        <input
-                          type="text"
-                          defaultValue={concept.artist}
-                          onChange={(e) => {
-                            setArtist(e.target.value);
-                          }}
-                        />
-                      </td>
-                      <td className="p-4 text-center">
-                        <input
-                          type="text"
-                          defaultValue={concept.url}
-                          onChange={(e) => {
-                            setUrl(e.target.value);
-                          }}
-                        />
-                      </td>
-                      <td className="p-4 justify-center items-center">
-                        <button
-                          onClick={() => {
-                            setEditRowId("");
-                            updateConcept({
-                              id: concept.id,
-                              title,
-                              artist,
-                              url,
-                              imageId,
-                            });
-                          }}
-                        >
-                          <EditIcon />
-                        </button>
-                      </td>
-                      <td className="p-4 justify-center items-center">
-                        {/* <div className="flex justify-center items-center w-[75px] h-[75px]"> */}
-                        <TrashIcon />
-                        {/* </div> */}
-                      </td>
-                    </tr>
-                  ))
+                  i < (pageNumber - 1) * 4 + 4 && (
+                    <Row i={i} setConcepts={setConcepts} concept={concept} />
+                  )
                 );
               })}
           </tbody>

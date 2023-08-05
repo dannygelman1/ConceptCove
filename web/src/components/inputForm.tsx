@@ -87,7 +87,10 @@ const ConceptForm = (): ReactElement => {
                 const fileName = files[0].name.substring(0, lastDotIndex);
                 const fileExtension = files[0].name.substring(lastDotIndex + 1);
                 const imageData = await createImage(fileName, fileExtension);
-                firebaseService.uploadFile(imageData.createImage.id, files[0]);
+                await firebaseService.uploadFile(
+                  imageData.createImage.id,
+                  files[0]
+                );
                 setImageId(imageData.createImage.id);
               }}
             />
