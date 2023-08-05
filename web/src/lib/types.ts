@@ -20,6 +20,13 @@ export type Concept = {
   createdAt: string;
 };
 
+export type ImageType = {
+  id: string;
+  name: string;
+  extension: string;
+  url: string;
+};
+
 export type ConceptInput = {
   imageId?: string;
   title?: string;
