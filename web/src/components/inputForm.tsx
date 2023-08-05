@@ -24,7 +24,7 @@ const ConceptForm = (): ReactElement => {
   const [usingImage, setUsingImage] = useState<boolean>(true);
   return (
     <form
-      className="p-4"
+      className="p-4 w-[400px]"
       onSubmit={async (event) => {
         event.preventDefault();
         if (firebaseService.currentUser) {
@@ -75,11 +75,11 @@ const ConceptForm = (): ReactElement => {
         </div>
         <div className="flex flex-col justify-between">
           <div className="text-xs text-black">IMAGE</div>
-          <div className="flex flex-row space-x-2 w-full">
+          <div className="flex flex-row space-x-2 w-full items-center">
             <input
               type="file"
               disabled={!usingImage}
-              className="w-56"
+              className="w-56 text-xs"
               onChange={async (event) => {
                 const files = event.target.files;
                 if (!files || files?.length === 0) return;
@@ -96,35 +96,35 @@ const ConceptForm = (): ReactElement => {
             />
             <button
               type="button"
-              className={cn({
-                "bg-gray-300 text-gray-400": usingImage,
-                "bg-gray-600 text-black": !usingImage,
-              })}
+              className="bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md p-2 text-xs"
               onClick={() => {
                 setUsingImage(!usingImage);
               }}
             >
-              no image
+              {usingImage ? "NO IMAGE" : "KEEP IMAGE"}
             </button>
           </div>
         </div>
       </div>
 
       <button
-        className={cn("p-2  mt-4", {
-          "bg-gray-100 text-gray-300": Boolean(
-            !title || !artist || !url || (!imageId && usingImage)
-          ),
-          "bg-gray-500 hover:bg-gray-400 text-black": Boolean(
-            title && artist && url && (imageId || !usingImage)
-          ),
-        })}
+        className={cn(
+          "bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md p-2 text-xs mt-4 disabled:bg-slate-200 disabled:text-slate-400",
+          {
+            "bg-gray-100 text-gray-300": Boolean(
+              !title || !artist || !url || (!imageId && usingImage)
+            ),
+            "bg-gray-500 hover:bg-gray-400 text-black": Boolean(
+              title && artist && url && (imageId || !usingImage)
+            ),
+          }
+        )}
         type="submit"
         disabled={Boolean(
           !title || !artist || !url || (!imageId && usingImage)
         )}
       >
-        Post concept
+        POST CONCEPT
       </button>
     </form>
   );

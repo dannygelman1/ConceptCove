@@ -120,7 +120,7 @@ export const Row = ({
             </div>
             <div className="w-1/4 truncate">
               <input
-                className="w-60 rounded-md"
+                className="w-60 rounded-md outline-none"
                 type="text"
                 defaultValue={title}
                 onChange={(e) => {
@@ -130,7 +130,7 @@ export const Row = ({
             </div>
             <div className="w-1/4 truncate">
               <input
-                className="w-60"
+                className="w-60 rounded-md outline-none"
                 type="text"
                 defaultValue={artist}
                 onChange={(e) => {
@@ -140,7 +140,7 @@ export const Row = ({
             </div>
             <div className="w-1/4 truncate">
               <input
-                className="w-60"
+                className="w-60 rounded-md outline-none"
                 type="text"
                 defaultValue={url}
                 onChange={(e) => {
