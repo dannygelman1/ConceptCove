@@ -1,15 +1,18 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { createUser, findUser } from "@/lib/AppService";
 import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { InputForm } from "./inputForm";
 import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
-import { Row } from "./row";
+import Image from "next/image";
+import cn from "classnames";
+import { TrashIcon } from "./trashIcon";
+import { EditIcon } from "./editIcon";
 
-interface TableProps {}
+interface TablePageProps {}
 
-export const Table = ({}: TableProps): ReactElement => {
+export const TablePage = ({}: TablePageProps): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -91,7 +94,21 @@ export const Table = ({}: TableProps): ReactElement => {
       </div>
       <div className="flex flex-col space-y-4 items-center">
         <h1 className="font-thin text-4xl text-center p-5">CONCEPT COVE</h1>
-        <table className="border-collapse px-20 table-fixed mx-20">
+        <Table>
+          {concepts
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+            .map((concept, i) => {
+              return (
+                i >= (pageNumber - 1) * 4 &&
+                i < (pageNumber - 1) * 4 + 4 && <Row concept={concept} i={i} />
+              );
+            })}
+        </Table>
+        {/* <table className="border-collapse px-20 table-fixed mx-20">
           <thead className="bg-slate-300">
             <tr>
               <th className="w-[400px] font-thin text-2xl">IMAGE</th>
@@ -118,7 +135,7 @@ export const Table = ({}: TableProps): ReactElement => {
                 );
               })}
           </tbody>
-        </table>
+        </table> */}
         <div className="flex flex-row space-x-2 items-center">
           <button
             className="bg-gray-500 rounded-sm p-2 disabled:bg-slate-300"
@@ -139,6 +156,69 @@ export const Table = ({}: TableProps): ReactElement => {
           >
             NEXT
           </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface TableProps {
+  children?: ReactNode;
+}
+
+export const Table = ({ children }: TableProps): ReactElement => {
+  return (
+    <div className="w-full flex flex-col">
+      <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14">
+        <div className="font-thin text-2xl w-1/4 truncate">IMAGE</div>
+        <div className="font-thin text-2xl w-1/4 truncate">
+          <span className="font-thin text-2xl">NAME</span>
+        </div>
+        <div className="font-thin text-2xl w-1/4 truncate">ARTIST</div>
+        <div className="font-thin text-2xl w-1/4 truncate">LINK</div>
+      </div>
+      {children}
+    </div>
+  );
+};
+
+interface RowProps {
+  concept: Concept;
+  i: number;
+}
+
+const Row = ({ concept, i }: RowProps) => {
+  return (
+    <div className="w-full group">
+      <div
+        className={cn(
+          "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14",
+          {
+            "bg-slate-200": i % 2 === 0,
+            "bg-slate-100": i % 2 === 1,
+          }
+        )}
+      >
+        <div className="w-1/4">
+          <div className="w-[75px] h-[75px] shrink-0">
+            <Image
+              className="w-[75px] h-[75px] rounded"
+              src={concept.imageUrl ?? "/pink.png"}
+              alt="Image"
+              objectFit="cover"
+              width={75}
+              height={75}
+            />
+          </div>
+        </div>
+        <div className="w-1/4 truncate">{concept.title}</div>
+        <div className="w-1/4 truncate">{concept.artist}</div>
+        <div className="w-1/4 truncate">{concept.url}</div>
+        <div className="absolute -right-6 top-1/2 transform -translate-y-1/2 invisible group-hover:visible">
+          <EditIcon />
+        </div>
+        <div className="absolute -right-12 top-1/2 transform -translate-y-1/2 invisible group-hover:visible">
+          <TrashIcon />
         </div>
       </div>
     </div>

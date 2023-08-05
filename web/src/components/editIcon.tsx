@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 export const EditIcon = (): ReactElement => {
   return (
     <svg
-      className="w-4 h-4"
+      className="w-4 h-4 text-black"
       width="800px"
       height="800px"
       viewBox="0 0 24 24"
