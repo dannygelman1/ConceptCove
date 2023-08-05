@@ -1,23 +1,9 @@
-import {
-  Dispatch,
-  ReactElement,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import {
-  createImage,
-  createUser,
-  deleteConcept,
-  findUser,
-  getConcept,
-  updateConcept,
-} from "@/lib/AppService";
+import { Dispatch, SetStateAction, useState } from "react";
+import { createImage, deleteConcept, updateConcept } from "@/lib/AppService";
 import Image from "next/image";
 import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { InputForm } from "./inputForm";
-import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
 import cn from "classnames";
 import { EditIcon } from "./editIcon";
@@ -26,6 +12,7 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { firebaseStorage } from "@/lib/firebase";
 import { SaveIcon } from "./saveIcon";
 import { EscapeIcon } from "./escapeIcon";
+import { ImageDialog } from "./imageDialog";
 
 interface RowProps {
   concept: Concept;
@@ -70,13 +57,18 @@ export const Row = ({
           <>
             <div className="w-1/4">
               <div className="w-[75px] h-[75px] shrink-0">
-                <Image
-                  className="w-[75px] h-[75px] rounded object-cover"
-                  src={imageUrl ?? "/pink.png"}
-                  alt="Image"
-                  width={75}
-                  height={75}
-                />
+                <Dialog.Root>
+                  <Dialog.Trigger>
+                    <Image
+                      className="w-[75px] h-[75px] rounded object-cover"
+                      src={imageUrl ?? "/pink.png"}
+                      alt="Image"
+                      width={75}
+                      height={75}
+                    />
+                  </Dialog.Trigger>
+                  <ImageDialog imageUrl={imageUrl ?? "/pink.png"} />
+                </Dialog.Root>
               </div>
             </div>
             <div className="w-1/4 truncate">{title}</div>
