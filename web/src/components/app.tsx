@@ -35,7 +35,6 @@ export const App = (): ReactElement => {
             setUser(firebaseService.currentUser);
           }
           const concepts = await firebaseService.currentUser?.getConcepts();
-          console.log(concepts);
           setConcepts(concepts ?? []);
         } else {
           firebaseService.user = undefined;

@@ -28,14 +28,12 @@ const ConceptForm = (): ReactElement => {
       onSubmit={async (event) => {
         event.preventDefault();
         if (firebaseService.currentUser) {
-          console.log("CREATE");
           await createConcept(firebaseService.currentUser.id, {
             imageId,
             title,
             artist,
             url,
           });
-          console.log("DONE");
           window.location.reload();
         }
       }}

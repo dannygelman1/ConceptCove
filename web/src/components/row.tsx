@@ -20,7 +20,7 @@ interface RowProps {
   editRowId: string;
   setEditRowId: Dispatch<SetStateAction<string>>;
   i: number;
-  totalConcepts: number;
+  concepts: Concept[];
 }
 
 export const Row = ({
@@ -28,7 +28,7 @@ export const Row = ({
   setConcepts,
   editRowId,
   setEditRowId,
-  totalConcepts,
+  concepts,
   i,
 }: RowProps) => {
   const [title, setTitle] = useState<string | undefined>(concept.title);
@@ -47,7 +47,7 @@ export const Row = ({
         className={cn(
           "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14",
           {
-            "rounded-b-md": (i + 1) % 4 == 0 || i == totalConcepts - 1,
+            "rounded-b-md": (i + 1) % 4 == 0 || i == concepts.length - 1,
             "bg-slate-200": i % 2 === 0,
             "bg-slate-100": i % 2 === 1,
           }

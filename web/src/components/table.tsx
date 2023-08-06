@@ -16,6 +16,7 @@ interface FullTableProps {
 export const FullTable = ({ concepts, setConcepts }: FullTableProps) => {
   const [editRowId, setEditRowId] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
+
   return (
     <div className="flex flex-col space-y-4 items-center">
       <h1 className="font-thin text-4xl text-center p-5">CONCEPT COVE</h1>
@@ -30,8 +31,8 @@ export const FullTable = ({ concepts, setConcepts }: FullTableProps) => {
               i >= (pageNumber - 1) * 4 &&
               i < (pageNumber - 1) * 4 + 4 && (
                 <Row
-                  key={i}
-                  totalConcepts={concepts.length}
+                  key={concept.id}
+                  concepts={concepts}
                   concept={concept}
                   i={i}
                   setConcepts={setConcepts}
