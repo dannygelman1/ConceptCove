@@ -31,9 +31,13 @@ export const Row = ({
   concepts,
   i,
 }: RowProps) => {
-  const [title, setTitle] = useState<string | undefined>(concept.title);
-  const [artist, setArtist] = useState<string | undefined>(concept.artist);
-  const [url, setUrl] = useState<string | undefined>(concept.url);
+  const [title, setTitle] = useState<string | undefined>(
+    concept.title ?? "N/A"
+  );
+  const [artist, setArtist] = useState<string | undefined>(
+    concept.artist ?? "N/A"
+  );
+  const [url, setUrl] = useState<string | undefined>(concept.url ?? "N/A");
   const [imageId, setImageId] = useState<string | undefined>(concept.image_id);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [imageUrl, setImageUrl] = useState<string | undefined>(
@@ -206,6 +210,11 @@ export const Row = ({
               className="absolute -right-14 top-1/2 transform -translate-y-1/2 invisible group-hover:visible hover:bg-slate-300 rounded-md p-1"
               onClick={() => {
                 setEditRowId("");
+                setTitle(concept.title ?? "N/A");
+                setArtist(concept.artist ?? "N/A");
+                setUrl(concept.url ?? "N/A");
+                setFile(undefined);
+                setUsingImage(true);
               }}
             >
               <EscapeIcon className="text-slate-800 hover:text-slate-900" />
