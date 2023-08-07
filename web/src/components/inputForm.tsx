@@ -3,6 +3,7 @@ import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ReactElement, useState } from "react";
 import cn from "classnames";
+import { useRouter } from "next/router";
 
 export const InputForm = (): ReactElement => {
   return (
@@ -21,7 +22,7 @@ const ConceptForm = (): ReactElement => {
   const [artist, setArtist] = useState<string | undefined>(undefined);
   const [url, setUrl] = useState<string | undefined>(undefined);
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [usingImage, setUsingImage] = useState<boolean>(true);
+
   return (
     <form
       className="p-4 w-[400px]"
@@ -43,6 +44,11 @@ const ConceptForm = (): ReactElement => {
             artist,
             url,
           });
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
           window.location.reload();
         }
       }}
@@ -81,7 +87,6 @@ const ConceptForm = (): ReactElement => {
           <div className="text-xs text-black">IMAGE</div>
           <input
             type="file"
-            disabled={!usingImage}
             className="w-56 text-xs"
             onChange={async (event) => {
               const files = event.target.files;

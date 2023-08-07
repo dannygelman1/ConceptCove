@@ -3,7 +3,6 @@ import { createImage, deleteConcept, updateConcept } from "@/lib/AppService";
 import Image from "next/image";
 import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
-import { InputForm } from "./inputForm";
 import { Concept } from "@/lib/types";
 import cn from "classnames";
 import { EditIcon } from "./editIcon";
@@ -222,6 +221,27 @@ export const Row = ({
           </>
         )}
       </div>
+    </div>
+  );
+};
+
+interface LoadingRowProps {
+  rowNum: number;
+}
+
+export const LoadingRow = ({ rowNum }: LoadingRowProps) => {
+  return (
+    <div className={cn("w-full group")}>
+      <div
+        className={cn(
+          "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14 animate-pulse",
+          {
+            "rounded-b-md": (rowNum + 1) % 4 == 0 || rowNum == 3,
+            "bg-slate-200/70": rowNum % 2 === 0,
+            "bg-slate-100/70": rowNum % 2 === 1,
+          }
+        )}
+      />
     </div>
   );
 };

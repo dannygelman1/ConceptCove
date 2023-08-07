@@ -6,10 +6,28 @@ import { InputForm } from "./inputForm";
 import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
 import { FullTable } from "./table";
+import { useSearchParams } from "next/navigation";
 
 export const App = (): ReactElement => {
   const [concepts, setConcepts] = useState<Concept[]>([]);
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [conceptsLoading, setConceptsLoading] = useState<boolean>(true);
+  const searchParams = useSearchParams();
+  const [pageNum, setPageNum] = useState<number>(1);
+
+  useEffect(() => {
+    const getPageNum = () => {
+      return new Promise<number>((resolve) => {
+        const pageNum = searchParams?.get("pageNum");
+        const pageNumber = pageNum ? parseInt(pageNum) : 1;
+        resolve(pageNumber);
+      });
+    };
+
+    getPageNum().then((pageNum) => {
+      setPageNum(pageNum);
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     const findConceptsAndUser = firebaseService.auth.onAuthStateChanged(
@@ -36,10 +54,12 @@ export const App = (): ReactElement => {
           }
           const concepts = await firebaseService.currentUser?.getConcepts();
           setConcepts(concepts ?? []);
+          setConceptsLoading(false);
         } else {
           firebaseService.user = undefined;
           setUser(undefined);
           setConcepts([]);
+          setConceptsLoading(false);
         }
       }
     );
@@ -47,7 +67,10 @@ export const App = (): ReactElement => {
   }, []);
 
   return (
-    <div className="absolute bg-white flex flex-col justify-start w-full h-full grow">
+    <div
+      className="absolute bg-white flex flex-col justify-start w-full grow"
+      style={{ minHeight: "100vh" }}
+    >
       <div className="flex space-x-5 justify-end p-4">
         {user && (
           <Dialog.Root>
@@ -80,7 +103,13 @@ export const App = (): ReactElement => {
           LOGOUT
         </button>
       </div>
-      <FullTable concepts={concepts} setConcepts={setConcepts} />
+      <FullTable
+        concepts={concepts}
+        setConcepts={setConcepts}
+        conceptsLoading={conceptsLoading}
+        pageNum={pageNum}
+        setPageNum={setPageNum}
+      />
     </div>
   );
 };
