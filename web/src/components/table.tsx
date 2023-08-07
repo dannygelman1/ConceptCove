@@ -3,6 +3,7 @@ import {
   ReactElement,
   ReactNode,
   SetStateAction,
+  useMemo,
   useState,
 } from "react";
 import { useRouter } from "next/router";
@@ -25,16 +26,41 @@ export const FullTable = ({
   setPageNum,
 }: FullTableProps) => {
   const [editRowId, setEditRowId] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredConcepts = useMemo(() => {
+    if (!searchTerm) {
+      return concepts;
+    }
+
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return concepts.filter(
+      (concept) =>
+        concept.title &&
+        concept.title.toLowerCase().includes(lowerCaseSearchTerm)
+    );
+  }, [searchTerm, concepts]);
+
   const router = useRouter();
   return (
     <div className="flex flex-col space-y-4 items-center">
-      <h1 className="font-thin text-4xl text-center p-5">CONCEPT COVE</h1>
+      <h1 className="font-thin text-4xl text-center pt-5 pb-2">CONCEPT COVE</h1>
+      <div className="flex flex-row space-x-2 w-full justify-end mr-48 -mt-20">
+        <span>SEARCH: </span>
+        <input
+          className="border-slate-600 border-2 rounded-md focus:outline-none"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const searchValue = event.target.value;
+            setSearchTerm(searchValue);
+          }}
+        ></input>
+      </div>
       <Table>
         {conceptsLoading
           ? Array.from(new Set([0, 1, 2, 3])).map((i) => (
               <LoadingRow rowNum={i} key={i} />
             ))
-          : concepts
+          : filteredConcepts
               .sort(
                 (a, b) =>
                   new Date(b.createdAt).getTime() -
