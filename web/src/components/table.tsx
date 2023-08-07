@@ -118,12 +118,13 @@ export const Table = ({ children }: TableProps): ReactElement => {
   return (
     <div className="w-full flex flex-col rounded-md min-h-[416px]">
       <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14 rounded-t-md">
-        <div className="font-thin text-2xl w-1/4 truncate">IMAGE</div>
-        <div className="font-thin text-2xl w-1/4 truncate">
+        <div className="font-thin text-2xl w-1/5 truncate">IMAGE</div>
+        <div className="font-thin text-2xl w-1/5 truncate">
           <span className="font-thin text-2xl">NAME</span>
         </div>
-        <div className="font-thin text-2xl w-1/4 truncate">ARTIST</div>
-        <div className="font-thin text-2xl w-1/4 truncate">LINK</div>
+        <div className="font-thin text-2xl w-1/5 truncate">ARTIST</div>
+        <div className="font-thin text-2xl w-1/5 truncate">LINK</div>
+        <div className="font-thin text-2xl w-1/5 truncate">CREATED</div>
       </div>
       {children}
     </div>

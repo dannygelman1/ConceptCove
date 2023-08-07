@@ -58,7 +58,7 @@ export const Row = ({
       >
         {editRowId !== concept.id ? (
           <>
-            <div className="w-1/4">
+            <div className="w-1/5">
               <div className="w-[75px] h-[75px] shrink-0">
                 <Dialog.Root>
                   <Dialog.Trigger>
@@ -74,9 +74,9 @@ export const Row = ({
                 </Dialog.Root>
               </div>
             </div>
-            <div className="w-1/4 truncate">{title}</div>
-            <div className="w-1/4 truncate">{artist}</div>
-            <div className="w-1/4 truncate">
+            <div className="w-1/5 truncate">{title}</div>
+            <div className="w-1/5 truncate">{artist}</div>
+            <div className="w-1/5 truncate">
               <a
                 href={url}
                 target="_blank"
@@ -86,10 +86,13 @@ export const Row = ({
                 {url}
               </a>
             </div>
+            <div className="w-1/5 truncate">
+              {formatDate(concept.createdAt)}
+            </div>
           </>
         ) : (
           <>
-            <div className="w-1/4">
+            <div className="w-1/5 truncate">
               <div className="flex flex-col items-start space-y-1">
                 <input
                   type="file"
@@ -113,9 +116,9 @@ export const Row = ({
                 </button>
               </div>
             </div>
-            <div className="w-1/4 truncate">
+            <div className="w-1/5 truncate">
               <input
-                className="w-60 rounded-md outline-none"
+                className="w-42 rounded-md outline-none"
                 type="text"
                 defaultValue={title}
                 onChange={(e) => {
@@ -123,9 +126,9 @@ export const Row = ({
                 }}
               />
             </div>
-            <div className="w-1/4 truncate">
+            <div className="w-1/5 truncate">
               <input
-                className="w-60 rounded-md outline-none"
+                className="w-42 rounded-md outline-none"
                 type="text"
                 defaultValue={artist}
                 onChange={(e) => {
@@ -133,15 +136,18 @@ export const Row = ({
                 }}
               />
             </div>
-            <div className="w-1/4 truncate">
+            <div className="w-1/5 truncate">
               <input
-                className="w-60 rounded-md outline-none"
+                className="w-42 rounded-md outline-none"
                 type="text"
                 defaultValue={url}
                 onChange={(e) => {
                   setUrl(e.target.value);
                 }}
               />
+            </div>
+            <div className="w-1/5 truncate">
+              {formatDate(concept.createdAt)}
             </div>
           </>
         )}
@@ -244,4 +250,30 @@ export const LoadingRow = ({ rowNum }: LoadingRowProps) => {
       />
     </div>
   );
+};
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+
+  const formattedDate = `${month} ${day}, ${year}`;
+  return formattedDate;
 };
