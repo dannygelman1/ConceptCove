@@ -12,6 +12,7 @@ import { firebaseStorage } from "@/lib/firebase";
 import { SaveIcon } from "./saveIcon";
 import { EscapeIcon } from "./escapeIcon";
 import { ImageDialog } from "./imageDialog";
+import { ExpandIcon } from "./expandIcon";
 
 interface RowProps {
   concept: Concept;
@@ -20,6 +21,7 @@ interface RowProps {
   setEditRowId: Dispatch<SetStateAction<string>>;
   i: number;
   concepts: Concept[];
+  rowsPerPage: number;
 }
 
 export const Row = ({
@@ -27,8 +29,9 @@ export const Row = ({
   setConcepts,
   editRowId,
   setEditRowId,
-  concepts,
   i,
+  concepts,
+  rowsPerPage,
 }: RowProps) => {
   const [title, setTitle] = useState<string | undefined>(
     concept.title ?? "N/A"
@@ -50,7 +53,8 @@ export const Row = ({
         className={cn(
           "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14",
           {
-            "rounded-b-md": (i + 1) % 4 == 0 || i == concepts.length - 1,
+            "rounded-b-md":
+              (i + 1) % rowsPerPage == 0 || i == concepts.length - 1,
             "bg-slate-200": i % 2 === 0,
             "bg-slate-100": i % 2 === 1,
           }
@@ -62,13 +66,18 @@ export const Row = ({
               <div className="w-[75px] h-[75px] shrink-0">
                 <Dialog.Root>
                   <Dialog.Trigger>
-                    <Image
-                      className="w-[75px] h-[75px] rounded object-cover"
-                      src={imageUrl ?? "/pink.png"}
-                      alt="Image"
-                      width={75}
-                      height={75}
-                    />
+                    <div className="relative w-[75px] h-[75px] rounded overflow-hidden">
+                      <Image
+                        className="w-[75px] h-[75px] rounded object-cover"
+                        src={imageUrl ?? "/pink.png"}
+                        alt="Image"
+                        width={75}
+                        height={75}
+                      />
+                      <div className="absolute inset-0 hover:bg-slate-500 opacity-0 hover:opacity-70 flex justify-center items-center">
+                        <ExpandIcon />
+                      </div>
+                    </div>
                   </Dialog.Trigger>
                   <ImageDialog imageUrl={imageUrl ?? "/pink.png"} />
                 </Dialog.Root>

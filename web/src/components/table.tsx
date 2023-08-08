@@ -9,8 +9,14 @@ import {
 import { useRouter } from "next/router";
 import { Concept } from "@/lib/types";
 import { LoadingRow, Row } from "./row";
+import { User } from "@/models/user";
+import * as Dialog from "@radix-ui/react-dialog";
+import { InputForm } from "./inputForm";
+import { EscapeIcon } from "./escapeIcon";
+import { SelectNumber } from "./selectNumber";
 
 interface FullTableProps {
+  user: User | undefined;
   concepts: Concept[];
   setConcepts: Dispatch<SetStateAction<Concept[]>>;
   conceptsLoading: boolean;
@@ -19,6 +25,7 @@ interface FullTableProps {
 }
 
 export const FullTable = ({
+  user,
   concepts,
   setConcepts,
   conceptsLoading,
@@ -27,6 +34,7 @@ export const FullTable = ({
 }: FullTableProps) => {
   const [editRowId, setEditRowId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [rowsPerPage, setRowsPerPage] = useState<number>(2);
 
   const filteredConcepts = useMemo(() => {
     if (!searchTerm) {
@@ -45,15 +53,33 @@ export const FullTable = ({
   return (
     <div className="flex flex-col space-y-4 items-center">
       <h1 className="font-thin text-4xl text-center pt-5 pb-2">CONCEPT COVE</h1>
-      <div className="flex flex-row space-x-2 w-full justify-end mr-48 -mt-20">
-        <span>SEARCH: </span>
-        <input
-          className="border-slate-600 border-2 rounded-md focus:outline-none"
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            const searchValue = event.target.value;
-            setSearchTerm(searchValue);
-          }}
-        ></input>
+      <div className="flex flex-row space-x-2 w-full justify-between px-24">
+        {user && (
+          <div className="flex flex-row space-x-2">
+            <Dialog.Root>
+              <Dialog.Trigger>
+                <div className="font-light text-lg p-1 flex flex-row items-center space-x-2 bg-slate-500/80 hover:bg-slate-500/90 text-slate-100 hover:text-white rounded-md">
+                  <span>CREATE</span>
+                  <div className="rotate-45">
+                    <EscapeIcon />
+                  </div>
+                </div>
+              </Dialog.Trigger>
+              <InputForm />
+            </Dialog.Root>
+            {/* <SelectNumber /> */}
+          </div>
+        )}
+        <div>
+          <span>SEARCH: </span>
+          <input
+            className="border-slate-600 border-2 rounded-md focus:outline-none"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              const searchValue = event.target.value;
+              setSearchTerm(searchValue);
+            }}
+          ></input>
+        </div>
       </div>
       <Table>
         {conceptsLoading
@@ -68,8 +94,8 @@ export const FullTable = ({
               )
               .map((concept, i) => {
                 return (
-                  i >= (pageNum - 1) * 4 &&
-                  i < (pageNum - 1) * 4 + 4 && (
+                  i >= (pageNum - 1) * rowsPerPage &&
+                  i < (pageNum - 1) * rowsPerPage + rowsPerPage && (
                     <Row
                       key={concept.id}
                       concepts={concepts}
@@ -78,6 +104,7 @@ export const FullTable = ({
                       setConcepts={setConcepts}
                       editRowId={editRowId}
                       setEditRowId={setEditRowId}
+                      rowsPerPage={rowsPerPage}
                     />
                   )
                 );
@@ -101,7 +128,7 @@ export const FullTable = ({
             setPageNum((prev) => prev + 1);
             router.push(`?pageNum=${pageNum + 1}`);
           }}
-          disabled={pageNum >= Math.ceil(concepts.length / 4)}
+          disabled={pageNum >= Math.ceil(concepts.length / rowsPerPage)}
         >
           NEXT
         </button>

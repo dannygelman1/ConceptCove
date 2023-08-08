@@ -72,16 +72,6 @@ export const App = (): ReactElement => {
       style={{ minHeight: "100vh" }}
     >
       <div className="flex space-x-5 justify-end p-4">
-        {user && (
-          <Dialog.Root>
-            <Dialog.Trigger>
-              <div className="font-light text-lg hover:text-slate-500">
-                CREATE
-              </div>
-            </Dialog.Trigger>
-            <InputForm />
-          </Dialog.Root>
-        )}
         {user ? (
           <span className="font-light text-lg">{user.name.toUpperCase()}</span>
         ) : (
@@ -109,6 +99,7 @@ export const App = (): ReactElement => {
         conceptsLoading={conceptsLoading}
         pageNum={pageNum}
         setPageNum={setPageNum}
+        user={user}
       />
     </div>
   );

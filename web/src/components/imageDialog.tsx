@@ -20,7 +20,9 @@ export const ImageDialog = ({ imageUrl }: ImageDialogProps): ReactElement => {
                 dialogCloseRef.current?.click();
               }}
             >
-              <EscapeIcon />
+              <div className="p-1 hover:bg-slate-300 rounded-md">
+                <EscapeIcon />
+              </div>
             </div>
           </div>
         </Dialog.Close>
