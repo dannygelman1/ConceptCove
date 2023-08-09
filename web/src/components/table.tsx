@@ -67,7 +67,7 @@ export const FullTable = ({
               </Dialog.Trigger>
               <InputForm />
             </Dialog.Root>
-            {/* <SelectNumber /> */}
+            <SelectNumber setRowsPerPage={setRowsPerPage} />
           </div>
         )}
         <div>
