@@ -3,7 +3,6 @@ import firebaseService from "@/lib/firebaseService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ReactElement, useState } from "react";
 import cn from "classnames";
-import { useRouter } from "next/router";
 
 export const InputForm = (): ReactElement => {
   return (

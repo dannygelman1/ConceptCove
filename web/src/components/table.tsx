@@ -34,7 +34,7 @@ export const FullTable = ({
 }: FullTableProps) => {
   const [editRowId, setEditRowId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(4);
 
   const filteredConcepts = useMemo(() => {
     if (!searchTerm) {
@@ -53,8 +53,8 @@ export const FullTable = ({
   return (
     <div className="flex flex-col space-y-4 items-center">
       <h1 className="font-thin text-4xl text-center pt-5 pb-2">CONCEPT COVE</h1>
-      <div className="flex flex-row space-x-2 w-full justify-between px-24">
-        {user && (
+      <div className="flex flex-row space-x-2 w-full justify-between items-center px-24">
+        {user ? (
           <div className="flex flex-row space-x-2">
             <Dialog.Root>
               <Dialog.Trigger>
@@ -67,8 +67,13 @@ export const FullTable = ({
               </Dialog.Trigger>
               <InputForm />
             </Dialog.Root>
-            <SelectNumber setRowsPerPage={setRowsPerPage} />
+            <SelectNumber
+              setRowsPerPage={setRowsPerPage}
+              rowsPerPage={rowsPerPage}
+            />
           </div>
+        ) : (
+          <div />
         )}
         <div>
           <span>SEARCH: </span>
