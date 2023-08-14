@@ -1,7 +1,3 @@
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { firebaseStorage } from "@/lib/firebase";
-import { Dispatch, SetStateAction } from "react";
-
 export interface UserType {
   id: string;
   name: string;
@@ -41,3 +37,14 @@ export type UpdateConceptInput = {
   artist?: string;
   url?: string;
 };
+
+export enum SortOrderType {
+  Created = "Created",
+  CreatedReverse = "CreatedReverse",
+  Link = "Link",
+  LinkReverse = "LinkReverse",
+  Name = "Name",
+  NameReverse = "NameReverse",
+  Artist = "Artist",
+  ArtistReverse = "ArtistReverse",
+}
