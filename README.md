@@ -1,4 +1,4 @@
-# Crossword Maker
+# Concept Cove
 
 # Table of Contents
 - [Inspiration](#inspiration)
