@@ -51,9 +51,9 @@ export const Row = ({
     <div className={cn("w-full group")}>
       <div
         className={cn(
-          "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14",
+          "flex flex-row space-x-10 h-24 items-center relative mx-24 px-14 border-r-2 border-l-2 border-slate-300",
           {
-            "rounded-b-md":
+            "rounded-b-md border-b-2":
               (i + 1) % rowsPerPage == 0 || i == concepts.length - 1,
             "bg-slate-200": i % 2 === 0,
             "bg-slate-100": i % 2 === 1,

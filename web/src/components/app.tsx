@@ -68,7 +68,7 @@ export const App = (): ReactElement => {
 
   return (
     <div
-      className="absolute bg-white flex flex-col justify-start w-full grow"
+      className="absolute bg-slate-100 flex flex-col justify-start w-full grow"
       style={{ minHeight: "100vh" }}
     >
       <div className="flex space-x-5 justify-end p-4">

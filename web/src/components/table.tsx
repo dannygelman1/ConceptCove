@@ -156,9 +156,9 @@ export const FullTable = ({
           <div />
         )}
         <div>
-          <span>SEARCH: </span>
+          <span className="font-thin">SEARCH: </span>
           <input
-            className="border-slate-600 border-2 rounded-md focus:outline-none"
+            className="border-slate-400 bg-slate-100 border-2 rounded-md focus:outline-none"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               const searchValue = event.target.value;
               setSearchTerm(searchValue);
@@ -229,7 +229,7 @@ export const Table = ({
 }: TableProps): ReactElement => {
   return (
     <div className="w-full flex flex-col rounded-md min-h-[416px]">
-      <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14 rounded-t-md">
+      <div className="flex flex-row space-x-10 bg-slate-300 mx-24 px-14 rounded-t-md border-t-2 border-r-2 border-l-2 border-slate-300">
         <div className="font-thin text-2xl w-1/5 truncate">IMAGE</div>
         <div
           className="font-thin text-2xl w-1/5 truncate cursor-pointer select-none"
