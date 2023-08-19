@@ -1,34 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Concept Cove
 
-## Getting Started
+# Table of Contents
+- [Inspiration](#inspiration)
+- [How to play](#how-to-use)
+- [Code Structure](#code-structure)
+  - [Frontend](#frontend-typescript-react-tailwind-nextjs)
+  - [Backend](#backend-typescript-nestjs)
+  - [Database](#database-postgresql)
 
-First, run the development server:
+## Inspiration
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Being a hobbyist 3D Artist, I will often go down a rabbit hole searching through concept art on [Artstation](https://www.artstation.com/channels/environmental_concept_design?sort_by=trending&dimension=all) to inspire my next work. I will have many tabs open, save many png's in folders and subfolders, and it would become one big mess. I decided to create a webapplication where I can store my concept art neatly and all in one place. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to use
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+First log in and create and account with the login/signup button
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Code structure
 
-## Learn More
+### Frontend (typescript, react, tailwind, Next.js)
 
-To learn more about Next.js, take a look at the following resources:
+### Backend (typescript, Nest.js)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Database (PostgreSQL)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ 
