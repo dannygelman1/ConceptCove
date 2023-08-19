@@ -136,6 +136,10 @@ I make sure that the correct user is found by saving the firebase_id in the `cre
     return user;
   }
 ```
+The `firebase_id`'s in my user table match the `User UID`'s in my firebase authetication container.
+<img width="450" alt="user2" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/804acfc2-1b7e-4eaf-a055-d88ed608e0dc">
+<img width="450" alt="user" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/5f162f38-a39c-40cf-9b61-789f83c644d7">
+
 
 #### Firebase Storage
 When I create an image, I both create an image entity with my `createImage` mutation, and upload the image to firebase into a folder with the `image.id` that is returned from `createImage` mutation
@@ -144,7 +148,7 @@ const imageData = await createImage(fileName, fileExtension);
 imageId = imageData.createImage.id;
 await firebaseService.uploadFile(imageId, file);
 ```
-The id's in my db match the id's in my firebase stroage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
+The `id`'s in my image table match the folder names in my firebase stroage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
  
 <img width="450" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
 
@@ -152,6 +156,48 @@ The id's in my db match the id's in my firebase stroage container. These lists a
 
 ### Database (PostgreSQL)
 
+Here is how I store my data. 
+
+ - `users` - each row corresponds to a user
+ - `concepts` - each row corresponds to one concept that a user owns
+ - `images` - each row corresponds to one image that is associated with one concept
+
+
+```mermaid
+classDiagram
+direction LR
+users "" --> "*" concepts : has many
+concepts "" --> "*" images : has one
+
+    class users {
+        +uuid id
+        +text name
+        +text email
+        +uuid firebase_id
+        +timestamptz created_at
+    	+timestamptz updated_at
+    }
+
+    class concepts {
+    	+uuid id
+        +uuid image_id
+        +uuid owner_id
+    	+text title
+    	+text artist
+        +text url
+        +timestamptz created_at
+    	+timestamptz updated_at
+    }
+
+    class images {
+    	+uuid id
+    	+text name
+    	+text extension
+        +timestamptz created_at
+    	+timestamptz updated_at
+
+    }
+```
 
 
 
