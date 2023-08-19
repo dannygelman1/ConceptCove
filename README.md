@@ -35,14 +35,60 @@ sequenceDiagram
     index.tsx ->>+ app.tsx: directs to
     app.tsx ->>+ firebase-auth: upon login, app creates/queries user
     firebase-auth ->>+ app.tsx: firebase return user to app
-    app.tsx ->>+ concept-cove-api: when user exists, app queries concept-cove-api for concepts
-    concept-cove-api ->>+ app.tsx: concept-cove-api returns concepts by email and firebase_id
-    app.tsx ->>+ firebase-storage: app queries firebase-storage for images
+    app.tsx ->>+ concept-cove-api: when user exists, app sends queries/mutations to concept-cove-api for concepts
+    concept-cove-api ->>+ app.tsx: concept-cove-api returns concepts by email
+    app.tsx ->>+ firebase-storage: app queries/adds images to firebase-storage
     firebase-storage ->>+ app.tsx: firebase return images to app
     concept-cove-api ->>+ concept-cove-db: concept-cove-api reads/writes to db
     concept-cove-db ->>+ concept-cove-api: db returns data to concept-cove-api
 ``` 
 ### Frontend (typescript, react, tailwind, Next.js)
+This is a single page typescript react application, where I use tailwind for all the styling and Next.js as my framework.
+
+#### Components
+- `app.tsx` - this is where you log in/sign up, and query all the concepts
+- `fullTable.tsx` - this is displays the title, create button, concepts per page dropdown, search bar, table and previous/next buttons, as well as holding the logic for sorting/filtering the rows
+- `row.tsx` - this displays a single row and the edit state of the row
+- `inputForm.tsd` - this is displays the input form to submit new entries
+
+#### GraphQL
+Each page uses queries and mutations from my `AppService.ts`, which is a light wrapper for the GraphQL queries/mutations in `gqlClient.ts`
+
+For example here is my `getConceptsByEmail` function in  `AppService.ts`:
+```
+export const getConceptsByEmail = async (
+  email: string
+): Promise<getConceptByEmailData | null> => {
+  const conceptsData = await gql.request<
+    getConceptByEmailData,
+    getConceptByEmailVariables
+  >(GET_CONCEPTS_BY_EMAIL, {
+    email,
+  });
+  return conceptsData;
+};
+```
+
+And here is my `getConceptsByEmail` query in gqlClient.ts:
+```
+export const GET_CONCEPTS_BY_EMAIL = gql`
+  query getConceptsByEmail($email: String!) {
+    conceptsByEmail(email: $email) {
+      id
+      image_id
+      title
+      artist
+      url
+      owner_id
+      createdAt
+    }
+  }
+`;
+```
+
+#### Firebase
+- firebase.ts - this file sets up my `firebaseApp` and `firebaseStorage`
+- firebaseService.ts - file encapsualtes all the firebase logic in my app. This is used for authentication and image storage.
 
 ### Backend (typescript, Nest.js)
 
