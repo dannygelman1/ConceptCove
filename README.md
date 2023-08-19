@@ -198,6 +198,14 @@ concepts "" --> "*" images : has one
 
     }
 ```
+#### Constraints
+
+- users
+  - unique email
+  - unique firebase_id
+- concepts
+  - image_id refrences id on images table
+  - owner_id references id on users table
 
 
 
