@@ -69,7 +69,7 @@ export const Row = ({
                     <div className="relative w-[75px] h-[75px] rounded overflow-hidden">
                       <Image
                         className="w-[75px] h-[75px] rounded object-cover"
-                        src={imageUrl ?? "/pink.png"}
+                        src={imageUrl ?? "/default.png"}
                         alt="Image"
                         width={75}
                         height={75}
@@ -79,7 +79,7 @@ export const Row = ({
                       </div>
                     </div>
                   </Dialog.Trigger>
-                  <ImageDialog imageUrl={imageUrl ?? "/pink.png"} />
+                  <ImageDialog imageUrl={imageUrl ?? "/default.png"} />
                 </Dialog.Root>
               </div>
             </div>

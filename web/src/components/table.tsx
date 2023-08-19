@@ -11,6 +11,7 @@ import { Concept, SortOrderType } from "@/lib/types";
 import { LoadingRow, Row } from "./row";
 import { User } from "@/models/user";
 import * as Dialog from "@radix-ui/react-dialog";
+import Image from "next/image";
 import { InputForm } from "./inputForm";
 import { EscapeIcon } from "./escapeIcon";
 import { SelectNumber } from "./selectNumber";
@@ -119,8 +120,19 @@ export const FullTable = ({
 
   const router = useRouter();
   return (
-    <div className="flex flex-col space-y-4 items-center">
-      <h1 className="font-thin text-4xl text-center pt-5 pb-2">CONCEPT COVE</h1>
+    <div className="flex flex-col space-y-4 items-center justify-center">
+      <div className="flex flex-row space-x-2 items-center">
+        <Image
+          className="w-[75px] h-[75px]"
+          src={"/logo.png"}
+          alt="Image"
+          width={75}
+          height={75}
+        />
+        <div className="font-thin text-4xl items-center justify-center text-center">
+          CONCEPT COVE
+        </div>
+      </div>
       <div className="flex flex-row space-x-2 w-full justify-between items-center px-24">
         {user ? (
           <div className="flex flex-row space-x-2">

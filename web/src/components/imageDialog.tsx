@@ -38,7 +38,7 @@ export const ImageDialog = ({ imageUrl }: ImageDialogProps): ReactElement => {
         >
           <Image
             className="object-contain fixed"
-            src={imageUrl ?? "/pink.png"}
+            src={imageUrl ?? "/default.png"}
             alt="Image"
             fill={true}
           />
