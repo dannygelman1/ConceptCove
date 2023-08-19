@@ -1,11 +1,9 @@
 import { ReactElement, useEffect, useState } from "react";
 import { createUser, findUser } from "@/lib/AppService";
 import firebaseService from "@/lib/firebaseService";
-import * as Dialog from "@radix-ui/react-dialog";
-import { InputForm } from "./inputForm";
 import { User } from "@/models/user";
 import { Concept } from "@/lib/types";
-import { FullTable } from "./table";
+import { FullTable } from "./fullTable";
 import { useSearchParams } from "next/navigation";
 
 export const App = (): ReactElement => {

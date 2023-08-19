@@ -1,7 +1,4 @@
 import {
-  GET_CONCEPT,
-  getConceptData,
-  getConceptVariables,
   CREATE_CONCEPT,
   createConceptData,
   createConceptVariables,
@@ -18,8 +15,6 @@ import {
   createImageData,
   createImageVariables,
   CREATE_IMAGE,
-  getImagesData,
-  GET_IMAGES,
   updateConceptData,
   updateConceptVariables,
   UPDATE_CONCEPT,
@@ -27,9 +22,7 @@ import {
   DELETE_CONCEPT,
   deleteConceptData,
 } from "@/lib/gqlClient";
-import { Concept, ConceptInput, UpdateConceptInput, UserType } from "./types";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { firebaseStorage } from "./firebase";
+import { ConceptInput, UpdateConceptInput } from "./types";
 
 const gql = new GQLClient();
 
@@ -77,16 +70,6 @@ export const deleteConcept = async (id: string): Promise<deleteConceptData> => {
   >(DELETE_CONCEPT, {
     id,
   });
-  return conceptData;
-};
-
-export const getConcept = async (id: string): Promise<getConceptData> => {
-  const conceptData = await gql.request<getConceptData, getConceptVariables>(
-    GET_CONCEPT,
-    {
-      id,
-    }
-  );
   return conceptData;
 };
 
@@ -148,33 +131,4 @@ export const createImage = async (
     }
   );
   return imageData;
-};
-
-export const findAllImages = async (): Promise<getImagesData> => {
-  const getImagesData = await gql.request<getImagesData>(GET_IMAGES);
-  return getImagesData;
-};
-
-export const getConcepts = async (
-  user: UserType
-): Promise<Concept[] | undefined> => {
-  const conceptsData = await getConceptsByEmail(user.email);
-  const conceptsWithImages = conceptsData?.conceptsByEmail.map(
-    async (concept) => {
-      let conceptWithImage = concept;
-      if (concept.image_id) {
-        const listRef = ref(firebaseStorage, concept.image_id);
-        const listUrls = await listAll(listRef);
-        if (listUrls.items.length > 0) {
-          const imageUrl = await getDownloadURL(listUrls.items[0]);
-          conceptWithImage = { ...concept, imageUrl };
-        }
-      }
-      return conceptWithImage;
-    }
-  );
-  if (conceptsWithImages) {
-    return Promise.all(conceptsWithImages);
-  }
-  return [];
 };

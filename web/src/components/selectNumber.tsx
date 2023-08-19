@@ -1,6 +1,5 @@
 import * as Select from "@radix-ui/react-select";
-import { Dispatch, ReactElement, SetStateAction, useRef } from "react";
-import Image from "next/image";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import { CaretIcon } from "./caretIcon";
 
 interface SelectNumberProps {

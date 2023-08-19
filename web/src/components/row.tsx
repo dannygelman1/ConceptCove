@@ -7,8 +7,6 @@ import { Concept } from "@/lib/types";
 import cn from "classnames";
 import { EditIcon } from "./editIcon";
 import { TrashIcon } from "./trashIcon";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { firebaseStorage } from "@/lib/firebase";
 import { SaveIcon } from "./saveIcon";
 import { EscapeIcon } from "./escapeIcon";
 import { ImageDialog } from "./imageDialog";
@@ -198,10 +196,10 @@ export const Row = ({
                   const imageData = await createImage(fileName, fileExtension);
                   newImageId = imageData.createImage.id;
                   await firebaseService.uploadFile(newImageId, file);
-                  const listRef = ref(firebaseStorage, newImageId);
-                  const listUrls = await listAll(listRef);
-                  if (listUrls.items.length > 0) {
-                    const imageUrl = await getDownloadURL(listUrls.items[0]);
+                  const imageUrl = await firebaseService.getImageUrl(
+                    newImageId
+                  );
+                  if (imageUrl) {
                     setImageUrl(imageUrl);
                   }
                 }

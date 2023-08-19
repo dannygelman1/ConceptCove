@@ -7,7 +7,7 @@ import {
   Unsubscribe,
 } from "@firebase/auth";
 import { firebaseApp, firebaseStorage } from "./firebase";
-import { ref, uploadBytes, UploadResult } from "firebase/storage";
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { User } from "@/models/user";
 
 class FirebaseService {
@@ -26,10 +26,6 @@ class FirebaseService {
     this.currentUser = user;
   }
 
-  isSignInWithEmailLink(link: string): boolean {
-    return isSignInWithEmailLink(this.auth, link);
-  }
-
   async signInWithPopup(): Promise<void> {
     const { user } = await signInWithPopup(this.auth, this.provider);
 
@@ -43,6 +39,15 @@ class FirebaseService {
   async uploadFile(imageId: string, file: File) {
     const testRef = ref(firebaseStorage, `${imageId}/${file.name}`);
     await uploadBytes(testRef, file);
+  }
+
+  async getImageUrl(name: string): Promise<string | undefined> {
+    const listRef = ref(firebaseStorage, name);
+    const listUrls = await listAll(listRef);
+    if (listUrls.items.length > 0) {
+      const imageUrl = await getDownloadURL(listUrls.items[0]);
+      return imageUrl;
+    }
   }
 }
 

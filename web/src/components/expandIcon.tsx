@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import cn from "classnames";
 
 interface ExpandIconProps {
   className?: string;

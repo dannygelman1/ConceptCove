@@ -1,7 +1,6 @@
-import { createConcept, getConceptsByEmail } from "@/lib/AppService";
-import { firebaseStorage } from "@/lib/firebase";
-import { Concept, ConceptInput, UserType } from "@/lib/types";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { getConceptsByEmail } from "@/lib/AppService";
+import firebaseService from "@/lib/firebaseService";
+import { Concept, UserType } from "@/lib/types";
 
 export class User {
   id: string;
@@ -22,10 +21,8 @@ export class User {
       async (concept) => {
         let conceptWithImage = concept;
         if (concept.image_id) {
-          const listRef = ref(firebaseStorage, concept.image_id);
-          const listUrls = await listAll(listRef);
-          if (listUrls.items.length > 0) {
-            const imageUrl = await getDownloadURL(listUrls.items[0]);
+          const imageUrl = await firebaseService.getImageUrl(concept.image_id);
+          if (imageUrl) {
             conceptWithImage = { ...concept, imageUrl };
           }
         }
@@ -37,18 +34,4 @@ export class User {
     }
     return [];
   }
-
-  // async addConcept(concept: ConceptInput) {
-  //   const conceptData = await createConcept(this.id, concept);
-  //   if (conceptData?.createConcept) {
-  //     this.concepts.push({
-  //       id: conceptData.createConcept.id,
-  //       image_id: conceptData.createConcept.image_id,
-  //       title: conceptData.createConcept.title,
-  //       artist: conceptData.createConcept.artist,
-  //       url: conceptData.createConcept.url,
-  //       owner_id: conceptData.createConcept.owner_id,
-  //     });
-  //   }
-  // }
 }

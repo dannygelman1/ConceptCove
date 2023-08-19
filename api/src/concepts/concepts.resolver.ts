@@ -32,16 +32,6 @@ export class ConceptsResolver {
     return this.conceptsService.delete(id);
   }
 
-  @Query(() => Concept, { name: 'concept' })
-  concept(@Args('id', { type: () => String }) id: string): Promise<Concept> {
-    return this.conceptsService.findOne(id);
-  }
-
-  @Query(() => [Concept], { name: 'allConcepts' })
-  allConcepts(): Promise<Concept[]> {
-    return this.conceptsService.findAll();
-  }
-
   @Query(() => [Concept], {
     description: 'Get all concepts for a given user email',
   })

@@ -20,9 +20,4 @@ export class ImagesResolver {
   ): Promise<Image | null> {
     return this.imagesService.findOneById(id);
   }
-
-  @Query(() => Image, { name: 'findAllImage', nullable: true })
-  findAllImages(): Promise<Image[]> {
-    return this.imagesService.findAll();
-  }
 }

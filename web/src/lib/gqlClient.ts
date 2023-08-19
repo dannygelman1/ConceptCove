@@ -27,27 +27,6 @@ export class GQLClient {
   }
 }
 
-export const GET_CONCEPT = gql`
-  query getConcept($id: String!) {
-    concept(id: $id) {
-      id
-      image_id
-      title
-      artist
-      url
-      owner_id
-    }
-  }
-`;
-
-export interface getConceptData {
-  getConcept: Concept | null;
-}
-
-export interface getConceptVariables {
-  id: string;
-}
-
 export const GET_CONCEPTS_BY_EMAIL = gql`
   query getConceptsByEmail($email: String!) {
     conceptsByEmail(email: $email) {
@@ -68,23 +47,6 @@ export interface getConceptByEmailData {
 
 export interface getConceptByEmailVariables {
   email: string;
-}
-
-export const GET_CONCEPTS = gql`
-  query getConcepts {
-    allConcepts {
-      id
-      image_id
-      title
-      artist
-      url
-      owner_id
-    }
-  }
-`;
-
-export interface getConceptsData {
-  allConcepts: Concept[];
 }
 
 export const CREATE_CONCEPT = gql`
@@ -190,20 +152,6 @@ export interface createImageVariables {
     name: string;
     extension: string;
   };
-}
-
-export const GET_IMAGES = gql`
-  query getImages {
-    findAllImage {
-      id
-      name
-      extension
-    }
-  }
-`;
-
-export interface getImagesData {
-  findAllImage: Image[];
 }
 
 export const UPDATE_CONCEPT = gql`
