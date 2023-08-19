@@ -91,6 +91,29 @@ export const GET_CONCEPTS_BY_EMAIL = gql`
 - firebaseService.ts - file encapsualtes all the firebase logic in my app. This is used for authentication and image storage.
 
 ### Backend (typescript, Nest.js)
+My api is organized into games, boxes, and user_boxes:
+ - `users` - to access the site you need to make an account, so this handles all logic around creating/querying users
+ - `concepts` - each user will own multiple concepts, so this handles all the logic around creating/editing/querying concepts
+ - `images` - each concept has at most one image associated with it, so this handles all the logic around creating/querying images
+ 
+Here are the queries and mutations:
+- users
+  - queries
+    - findUser
+  - mutations
+    - createUser
+- concepts
+  - queries
+    - conceptsByEmail
+  - mutations
+    - createConcept
+    - updateConcept
+    - deleteConcept
+- images
+  - queries
+    - findImage
+  - mutations
+    - createImage
 
 ### Database (PostgreSQL)
 
