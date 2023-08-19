@@ -91,11 +91,12 @@ export const GET_CONCEPTS_BY_EMAIL = gql`
 - firebaseService.ts - file encapsualtes all the firebase logic in my app. This is used for authentication and image storage.
 
 ### Backend (typescript, Nest.js)
-My api is organized into games, boxes, and user_boxes:
+My api is organized into users, concepts, and images:
  - `users` - to access the site you need to make an account, so this handles all logic around creating/querying users
  - `concepts` - each user will own multiple concepts, so this handles all the logic around creating/editing/querying concepts
  - `images` - each concept has at most one image associated with it, so this handles all the logic around creating/querying images
- 
+
+#### Quries/Mutations
 Here are the queries and mutations:
 - users
   - queries
@@ -114,6 +115,40 @@ Here are the queries and mutations:
     - findImage
   - mutations
     - createImage
+
+#### Firebase Auth
+I make sure that the correct user is found by saving the firebase_id in the `createUser` mutation:
+```
+  @Mutation(() => User)
+  createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ): Promise<User> {
+    return this.usersService.create(createUserInput);
+  }
+
+  async create(createUserInput: CreateUserInput) {
+    let user = new User();
+
+    user.name = createUserInput.name;
+    user.email = createUserInput.email;
+    user.firebase_id = createUserInput.firebase_id;
+    user = await this.usersRepository.save(user);
+    return user;
+  }
+```
+
+#### Firebase Storage
+When I create an image, I both create an image entity with my `createImage` mutation, and upload the image to firebase into a folder with the `image.id` that is returned from `createImage` mutation
+```
+const imageData = await createImage(fileName, fileExtension);
+imageId = imageData.createImage.id;
+await firebaseService.uploadFile(imageId, file);
+```
+The id's in my db match the id's in my firebase stroage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
+ 
+<img width="450" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
+
+<img width="450" alt="Screen Shot 2023-08-19 at 3 32 35 PM" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/71a88054-af23-4de3-a107-2f63f51870ec">
 
 ### Database (PostgreSQL)
 
