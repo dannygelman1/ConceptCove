@@ -47,9 +47,9 @@ This is a single page typescript react application, where I use tailwind for all
 
 #### Components
 - `app.tsx` - this is where you log in/sign up, and query all the concepts
-- `fullTable.tsx` - this is displays the title, create button, concepts per page dropdown, search bar, table and previous/next buttons, as well as holding the logic for sorting/filtering the rows
+- `fullTable.tsx` - this displays the title, create button, concepts per page dropdown, search bar, table and previous/next buttons, as well as holding the logic for sorting/filtering the rows
 - `row.tsx` - this displays a single row and the edit state of the row
-- `inputForm.tsd` - this is displays the input form to submit new entries
+- `inputForm.tsx` - this displays the input form to submit new entries
 
 #### GraphQL
 Each page uses queries and mutations from my `AppService.ts`, which is a light wrapper for the GraphQL queries/mutations in `gqlClient.ts`
@@ -88,11 +88,11 @@ export const GET_CONCEPTS_BY_EMAIL = gql`
 
 #### Firebase
 - firebase.ts - this file sets up my `firebaseApp` and `firebaseStorage`
-- firebaseService.ts - file encapsulates all the firebase logic in my app. This is used for authentication and image storage.
+- firebaseService.ts - this file encapsulates all the firebase logic in my app and is used for authentication and image storage.
 
 ### Backend (typescript, Nest.js)
 My api is organized into users, concepts, and images:
- - `users` - to access the site you need to make an account, so this handles all logic around creating/querying users
+ - `users` - to access the site you need to make an account, so this handles all the logic around creating/querying users
  - `concepts` - each user will own multiple concepts, so this handles all the logic around creating/editing/querying concepts
  - `images` - each concept has at most one image associated with it, so this handles all the logic around creating/querying images
 
@@ -142,13 +142,13 @@ The `firebase_id`'s in my user table match the `User UID`'s in my firebase authe
 
 
 #### Firebase Storage
-When I create an image, I both create an image entity with my `createImage` mutation, and upload the image to firebase into a folder with the `image.id` that is returned from `createImage` mutation
+When I create an image, I both create an image entity with my `createImage` mutation, and upload the image to firebase into a folder that has the image Id (returned from `createImage` mutation) as the name.
 ```
 const imageData = await createImage(fileName, fileExtension);
 imageId = imageData.createImage.id;
 await firebaseService.uploadFile(imageId, file);
 ```
-The `id`'s in my image table match the folder names in my firebase storage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
+The `id`'s in my image table match the folder names in my firebase storage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-1 match.
  
 <img width="400" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
 
