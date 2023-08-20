@@ -88,7 +88,7 @@ export const GET_CONCEPTS_BY_EMAIL = gql`
 
 #### Firebase
 - firebase.ts - this file sets up my `firebaseApp` and `firebaseStorage`
-- firebaseService.ts - file encapsualtes all the firebase logic in my app. This is used for authentication and image storage.
+- firebaseService.ts - file encapsulates all the firebase logic in my app. This is used for authentication and image storage.
 
 ### Backend (typescript, Nest.js)
 My api is organized into users, concepts, and images:
@@ -96,7 +96,7 @@ My api is organized into users, concepts, and images:
  - `concepts` - each user will own multiple concepts, so this handles all the logic around creating/editing/querying concepts
  - `images` - each concept has at most one image associated with it, so this handles all the logic around creating/querying images
 
-#### Quries/Mutations
+#### Queries/Mutations
 Here are the queries and mutations:
 - users
   - queries
@@ -136,7 +136,7 @@ I make sure that the correct user is found by saving the firebase_id in the `cre
     return user;
   }
 ```
-The `firebase_id`'s in my user table match the `User UID`'s in my firebase authetication container.
+The `firebase_id`'s in my user table match the `User UID`'s in my firebase authentication container.
 <img width="400" alt="user2" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/804acfc2-1b7e-4eaf-a055-d88ed608e0dc">
 <img width="400" alt="user" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/5f162f38-a39c-40cf-9b61-789f83c644d7">
 
@@ -148,7 +148,7 @@ const imageData = await createImage(fileName, fileExtension);
 imageId = imageData.createImage.id;
 await firebaseService.uploadFile(imageId, file);
 ```
-The `id`'s in my image table match the folder names in my firebase stroage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
+The `id`'s in my image table match the folder names in my firebase storage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
  
 <img width="400" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
 
@@ -204,7 +204,7 @@ concepts "" --> "*" images : has one
   - unique email
   - unique firebase_id
 - concepts
-  - image_id refrences id on images table
+  - image_id references id on images table
   - owner_id references id on users table
 
 
