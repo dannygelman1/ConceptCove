@@ -137,8 +137,8 @@ I make sure that the correct user is found by saving the firebase_id in the `cre
   }
 ```
 The `firebase_id`'s in my user table match the `User UID`'s in my firebase authetication container.
-<img width="450" alt="user2" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/804acfc2-1b7e-4eaf-a055-d88ed608e0dc">
-<img width="450" alt="user" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/5f162f38-a39c-40cf-9b61-789f83c644d7">
+<img width="400" alt="user2" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/804acfc2-1b7e-4eaf-a055-d88ed608e0dc">
+<img width="400" alt="user" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/5f162f38-a39c-40cf-9b61-789f83c644d7">
 
 
 #### Firebase Storage
@@ -150,9 +150,9 @@ await firebaseService.uploadFile(imageId, file);
 ```
 The `id`'s in my image table match the folder names in my firebase stroage container. These lists are ordered differently, so you may not see the 1-to-1 match of id's, but they are a 1-to-t match.
  
-<img width="450" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
+<img width="400" alt="ids" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/ba9e5e95-c636-402a-8329-91b7c2253a42">
 
-<img width="450" alt="Screen Shot 2023-08-19 at 3 32 35 PM" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/71a88054-af23-4de3-a107-2f63f51870ec">
+<img width="400" alt="Screen Shot 2023-08-19 at 3 32 35 PM" src="https://github.com/dannygelman1/ConceptCove/assets/45411340/71a88054-af23-4de3-a107-2f63f51870ec">
 
 ### Database (PostgreSQL)
 
